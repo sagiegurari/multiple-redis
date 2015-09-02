@@ -73,7 +73,7 @@ In order to use this library, you need to either create the redis clients or pro
 
 ```js
 //create multiple redis clients
-var Redis = require('redis');
+var redis = require('redis');
 var client1 = redis.createClient(...);
 var client2 = redis.createClient(...);
 
@@ -101,7 +101,9 @@ var multiClient = MultipleRedis.createClient([{
 //run any command on the multi client instead of the original clients
 multiClient.set("string key", "string val", callback);
 ```
-
+<br>
+The rest of the API is the same as defined in the redis node library.
+<br>
 <a name="installation"></a>
 ## Installation
 In order to use this library, just run the following npm install command:
