@@ -65,7 +65,7 @@ When the first redis server comes back up, the session is still available to the
 any session modification (due to some HTTP request) will cause both redis servers to now hold the latest express session data.
 <br>
 It is by no means, not a perfect solution, but it does has its advantages.<br>
-First and formost, its simple deployment.
+First and foremost, its simple deployment requirements.
 
 <a name="usage"></a>
 ## Usage

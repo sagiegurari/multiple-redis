@@ -43,6 +43,20 @@ Creates and returns a new MultiRedisClient instance.
 | --- | --- | --- |
 | clients | <code>redis</code> &#124; <code>Array</code> | The redis client/s |
 
+**Example**  
+```js
+//create multiple redis clients
+var redis = require('redis');
+var client1 = redis.createClient(...);
+var client2 = redis.createClient(...);
+
+//create the wrapper client
+var MultipleRedis = require('multiple-redis');
+var multiClient = MultipleRedis.createClient([client1, client2]);
+
+//run any command on the multi client instead of the original clients
+multiClient.set('string key', 'string val', callback);
+```
 <a name="MultiRedisClient.createClient"></a>
 ### MultiRedisClient.createClient(connectionInfo, [options]) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
 **Kind**: static method of <code>[MultiRedisClient](#MultiRedisClient)</code>  
@@ -56,3 +70,18 @@ Creates and returns a new MultiRedisClient instance.
 | connectionInfo.post | <code>number</code> | The redis port |
 | [options] | <code>Array</code> | Used when this client creates the redis clients |
 
+**Example**  
+```js
+//create the wrapper client with connection info
+var MultipleRedis = require('multiple-redis');
+var multiClient = MultipleRedis.createClient([{
+  host: 'host1',
+  port: 6379
+}, {
+  host: 'host2',
+  port: 6379
+}], options);
+
+//run any command on the multi client instead of the original clients
+multiClient.set('string key', 'string val', callback);
+```
