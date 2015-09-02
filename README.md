@@ -82,7 +82,7 @@ var MultipleRedis = require('multiple-redis');
 var multiClient = MultipleRedis.createClient([client1, client2]);
 
 //run any command on the multi client instead of the original clients
-multiClient.set("string key", "string val", callback);
+multiClient.set('string key', 'string val', callback);
 ```
 
 Or
