@@ -101,7 +101,6 @@ var multiClient = MultipleRedis.createClient([{
 //run any command on the multi client instead of the original clients
 multiClient.set("string key", "string val", callback);
 ```
-<br>
 The rest of the API is the same as defined in the redis node library.
 <br>
 <a name="installation"></a>
