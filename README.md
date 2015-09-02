@@ -123,7 +123,7 @@ See full docs at: [API Docs](docs/api.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2015-09-03  | v0.0.1   | Initial release. |
+| 2015-09-03  | v0.0.2   | Initial release. |
 
 <a name="license"></a>
 ## License

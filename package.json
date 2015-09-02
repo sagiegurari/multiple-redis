@@ -1,6 +1,6 @@
 {
   "name": "multiple-redis",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Run redis commands against multiple redis instances.",
   "main": "index.js",
   "directories": {
