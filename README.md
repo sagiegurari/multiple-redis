@@ -61,7 +61,7 @@ redis session store.<br>
 When a new session is created, it will be created in all redis servers (in this example, lets assume we have 2).<br>
 In case the first redis server suddenly fails, the session store is still able to fetch and update the session data from the
 second redis server.<br>
-When the first redis server comes back up, the session is still available to the session store from the second redis server and<br>
+When the first redis server comes back up, the session is still available to the session store from the second redis server and
 any session modification (due to some HTTP request) will cause both redis servers to now hold the latest express session data.
 <br>
 It is by no means, not a perfect solution, but it does has its advantages.<br>
