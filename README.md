@@ -91,15 +91,15 @@ Or
 //create the wrapper client with connection info
 var MultipleRedis = require('multiple-redis');
 var multiClient = MultipleRedis.createClient([{
-    host: host1,
+    host: 'host1',
     port: 6379
 }, {
-   host: host2,
+   host: 'host2',
    port: 6379
 }], options);
 
 //run any command on the multi client instead of the original clients
-multiClient.set("string key", "string val", callback);
+multiClient.set('string key', 'string val', callback);
 ```
 The rest of the API is the same as defined in the redis node library.
 <br>
