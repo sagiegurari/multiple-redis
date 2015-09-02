@@ -48,6 +48,7 @@ Once a specific redis provides the data, the next redis servers are skipped and 
 ensure that all redis servers are updated.<br>
 If any redis server was able to process the command, the original command callback will receive a valid response.<br>
 <br>
+
 This means that at least once redis server needs to work good for the main client to notify the calling code that everything works ok.
 <br>
 A side affect of this solution is that every publish event would be received multiple times by the subscribers, 
