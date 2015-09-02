@@ -34,7 +34,7 @@ If that redis client is not available, it will not failover to the slave redis.<
 There are other libraries to resolve the issue, but the basic library does not provide any solution.<br>
 Other issues might be if you failover to the slave redis but it is only readonly mode (by default slave redis is read only).<br>
 <br>
-**This does not mean that I do not support the Redis master/slave + sentinal solution** but sometimes using multiple<br>
+**This does not mean that I do not support the Redis master/slave + sentinal solution** but sometimes using multiple
 independent Redis servers for none critical data serves as a better solution which is much more simple to deploy and manage in production. 
 
 <a name="howlibworks"></a>
