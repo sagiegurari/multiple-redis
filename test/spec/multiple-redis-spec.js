@@ -198,7 +198,7 @@ describe('MultipleRedis Tests', function () {
             var client = MultipleRedis.createClient([client1, client2]);
 
             assert.isFalse(client.connected);
-            assert.isUndefined(client.server_info);
+            assert.isNull(client.server_info);
         });
 
         it('connect via event', function (done) {
@@ -211,7 +211,7 @@ describe('MultipleRedis Tests', function () {
             var client = MultipleRedis.createClient([client1, client2]);
 
             assert.isFalse(client.connected);
-            assert.isUndefined(client.server_info);
+            assert.isNull(client.server_info);
 
             EventEmitterEnhancer.modifyInstance(client);
 
@@ -242,6 +242,32 @@ describe('MultipleRedis Tests', function () {
 
             client1.connected = true;
             client1.emit('connect');
+        });
+
+        it('connect for multiple proxy clients', function () {
+            var client1 = new EventEmitter();
+            client1.connected = false;
+            client1.server_info = 'server1';
+            var multipleClient1 = MultipleRedis.createClient(client1);
+
+            var client2 = new EventEmitter();
+            client2.connected = true;
+            client2.server_info = 'server2';
+            var multipleClient2 = MultipleRedis.createClient(client2);
+
+            var client3 = new EventEmitter();
+            client3.connected = true;
+            client3.server_info = 'server3';
+            var multipleClient3 = MultipleRedis.createClient(client3);
+
+            assert.isFalse(multipleClient1.connected);
+            assert.isNull(multipleClient1.server_info);
+
+            assert.isTrue(multipleClient2.connected);
+            assert.equal(multipleClient2.server_info, 'server2');
+
+            assert.isTrue(multipleClient3.connected);
+            assert.equal(multipleClient3.server_info, 'server3');
         });
     });
 

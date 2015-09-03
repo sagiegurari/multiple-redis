@@ -7,6 +7,8 @@
 
 * [MultiRedisClient](#MultiRedisClient) ⇐ <code>EventEmitter</code>
   * [new MultiRedisClient(params)](#new_MultiRedisClient_new)
+  * [.connected](#MultiRedisClient.connected) : <code>boolean</code>
+  * [.server_info](#MultiRedisClient.server_info) : <code>object</code>
   * [#resetState()](#MultiRedisClient+resetState) ℗
   * [.setupPrototype()](#MultiRedisClient.setupPrototype) ℗
   * _static_
@@ -27,6 +29,16 @@ Proxies requests to one or more redis clients.
 | [params.connectionInfo.post] | <code>number</code> | The redis port |
 | [params.options] | <code>Array</code> | Used when this client creates the redis clients |
 
+<a name="MultiRedisClient.connected"></a>
+### MultiRedisClient.connected : <code>boolean</code>
+True when at least one internal redis client is connected.
+
+**Access:** public  
+<a name="MultiRedisClient.server_info"></a>
+### MultiRedisClient.server_info : <code>object</code>
+After the ready probe completes, the results from the INFO command are saved in this attribute.
+
+**Access:** public  
 <a name="MultiRedisClient+resetState"></a>
 ### MultiRedisClient#resetState() ℗
 Resets the redis attributes based on the status of the internal redis clients.
