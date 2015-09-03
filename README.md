@@ -124,6 +124,7 @@ See full docs at: [API Docs](docs/api.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
+| 2015-09-03  | v0.0.3   | Added support for connected and server_info attributes. |
 | 2015-09-03  | v0.0.2   | Initial release. |
 
 <a name="license"></a>

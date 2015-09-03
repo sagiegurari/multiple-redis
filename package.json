@@ -1,6 +1,6 @@
 {
   "name": "multiple-redis",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Run redis commands against multiple redis instances.",
   "main": "index.js",
   "directories": {
@@ -27,6 +27,7 @@
   "devDependencies": {
     "blanket": "latest",
     "chai": "latest",
+    "event-emitter-enhancer": "latest",
     "grunt": "latest",
     "grunt-blanket": "latest",
     "grunt-cli": "latest",

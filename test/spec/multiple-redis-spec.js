@@ -7,6 +7,7 @@ var assert = chai.assert;
 var redis = require('redis');
 var events = require('events');
 var EventEmitter = events.EventEmitter;
+var EventEmitterEnhancer = require('event-emitter-enhancer');
 var MultipleRedis = require('../../');
 
 var noop = function () {
@@ -170,6 +171,77 @@ describe('MultipleRedis Tests', function () {
             });
 
             client1.emit('connect', 1, 2, 'test');
+        });
+    });
+
+    describe('connect tests', function () {
+        it('connect existing clients', function () {
+            var client1 = new EventEmitter();
+            client1.connected = false;
+            client1.server_info = 'server1';
+            var client2 = new EventEmitter();
+            client2.connected = true;
+            client2.server_info = 'server2';
+            var client = MultipleRedis.createClient([client1, client2]);
+
+            assert.isTrue(client.connected);
+            assert.equal(client.server_info, 'server2');
+        });
+
+        it('connect existing not connected clients', function () {
+            var client1 = new EventEmitter();
+            client1.connected = false;
+            client1.server_info = 'server1';
+            var client2 = new EventEmitter();
+            client2.connected = false;
+            client2.server_info = 'server2';
+            var client = MultipleRedis.createClient([client1, client2]);
+
+            assert.isFalse(client.connected);
+            assert.isUndefined(client.server_info);
+        });
+
+        it('connect via event', function (done) {
+            var client1 = new EventEmitter();
+            client1.connected = false;
+            client1.server_info = 'server1';
+            var client2 = new EventEmitter();
+            client2.connected = false;
+            client2.server_info = 'server2';
+            var client = MultipleRedis.createClient([client1, client2]);
+
+            assert.isFalse(client.connected);
+            assert.isUndefined(client.server_info);
+
+            EventEmitterEnhancer.modifyInstance(client);
+
+            var unbind = client.onAsync('connect', function () {
+                assert.isTrue(client.connected);
+                assert.equal(client.server_info, 'server1');
+
+                unbind();
+
+                client.onAsync('end', function () {
+                    assert.isFalse(client.connected);
+                    assert.equal(client.server_info, 'server1');
+
+                    client.onAsync('connect', function () {
+                        assert.isTrue(client.connected);
+                        assert.equal(client.server_info, 'server2');
+
+                        done();
+                    });
+
+                    client2.connected = true;
+                    client2.emit('connect');
+                });
+
+                client1.connected = false;
+                client1.emit('end');
+            });
+
+            client1.connected = true;
+            client1.emit('connect');
         });
     });
 

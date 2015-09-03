@@ -7,6 +7,7 @@
 
 * [MultiRedisClient](#MultiRedisClient) ⇐ <code>EventEmitter</code>
   * [new MultiRedisClient(params)](#new_MultiRedisClient_new)
+  * [#resetState()](#MultiRedisClient+resetState) ℗
   * [.setupPrototype()](#MultiRedisClient.setupPrototype) ℗
   * _static_
     * [.createClient(clients)](#MultiRedisClient.createClient) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
@@ -26,6 +27,11 @@ Proxies requests to one or more redis clients.
 | [params.connectionInfo.post] | <code>number</code> | The redis port |
 | [params.options] | <code>Array</code> | Used when this client creates the redis clients |
 
+<a name="MultiRedisClient+resetState"></a>
+### MultiRedisClient#resetState() ℗
+Resets the redis attributes based on the status of the internal redis clients.
+
+**Access:** private  
 <a name="MultiRedisClient.setupPrototype"></a>
 ### MultiRedisClient.setupPrototype() ℗
 Adds all functions with proxy capabilities.
