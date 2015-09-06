@@ -9,6 +9,7 @@
   * [new MultiRedisClient(params)](#new_MultiRedisClient_new)
   * [.connected](#MultiRedisClient.connected) : <code>boolean</code>
   * [.server_info](#MultiRedisClient.server_info) : <code>object</code>
+  * [#getUniqueEndpoints(connectionInfo)](#MultiRedisClient+getUniqueEndpoints) ⇒ <code>Array</code> ℗
   * [#resetState()](#MultiRedisClient+resetState) ℗
   * [.setupPrototype()](#MultiRedisClient.setupPrototype) ℗
   * _static_
@@ -23,11 +24,11 @@ Proxies requests to one or more redis clients.
 | Param | Type | Description |
 | --- | --- | --- |
 | params | <code>object</code> | The client init params |
-| [params.clients] | <code>redis</code> &#124; <code>Array</code> | The redis client/s (if not provided, the connection info must be provided instead) |
-| [params.connectionInfo] | <code>Array</code> | The redis client/s connection info (if not provided, the redis clients must be provided) |
+| [params.clients] | <code>Array</code> &#124; <code>redis</code> | The redis client/s (if not provided, the connection info must be provided instead) |
+| [params.connectionInfo] | <code>Array</code> &#124; <code>object</code> | The redis client/s connection info (if not provided, the redis clients must be provided) |
 | [params.connectionInfo.host] | <code>string</code> | The redis host |
-| [params.connectionInfo.post] | <code>number</code> | The redis port |
-| [params.options] | <code>Array</code> | Used when this client creates the redis clients |
+| [params.connectionInfo.port] | <code>number</code> | The redis port |
+| [params.options] | <code>Array</code> | Used when this client creates the redis clients (see redis module for more details) |
 
 <a name="MultiRedisClient.connected"></a>
 ### MultiRedisClient.connected : <code>boolean</code>
@@ -39,6 +40,19 @@ True when at least one internal redis client is connected.
 After the ready probe completes, the results from the INFO command are saved in this attribute.
 
 **Access:** public  
+<a name="MultiRedisClient+getUniqueEndpoints"></a>
+### MultiRedisClient#getUniqueEndpoints(connectionInfo) ⇒ <code>Array</code> ℗
+Returns the connection info array without duplicates.
+
+**Returns**: <code>Array</code> - The connection info array without duplicates  
+**Access:** private  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| connectionInfo | <code>Array</code> | The redis client/s connection info |
+| connectionInfo.host | <code>string</code> | The redis host |
+| connectionInfo.port | <code>number</code> | The redis port |
+
 <a name="MultiRedisClient+resetState"></a>
 ### MultiRedisClient#resetState() ℗
 Resets the redis attributes based on the status of the internal redis clients.
@@ -59,7 +73,7 @@ Creates and returns a new MultiRedisClient instance.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| clients | <code>redis</code> &#124; <code>Array</code> | The redis client/s |
+| clients | <code>Array</code> &#124; <code>redis</code> | The redis client/s |
 
 **Example**  
 ```js
@@ -83,10 +97,10 @@ multiClient.set('string key', 'string val', callback);
 
 | Param | Type | Description |
 | --- | --- | --- |
-| connectionInfo | <code>Array</code> | The redis client/s connection info |
+| connectionInfo | <code>Array</code> &#124; <code>object</code> | The redis client/s connection info |
 | connectionInfo.host | <code>string</code> | The redis host |
-| connectionInfo.post | <code>number</code> | The redis port |
-| [options] | <code>Array</code> | Used when this client creates the redis clients |
+| connectionInfo.port | <code>number</code> | The redis port |
+| [options] | <code>Array</code> | Used when this client creates the redis clients (see redis module for more details) |
 
 **Example**  
 ```js

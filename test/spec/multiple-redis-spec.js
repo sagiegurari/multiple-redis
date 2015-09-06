@@ -76,6 +76,24 @@ describe('MultipleRedis Tests', function () {
             assert.equal(client.clients.length, 2);
         });
 
+        it('connection info array with duplicates', function () {
+            var client = MultipleRedis.createClient([{
+                host: 'localhost1',
+                port: 1234
+            }, {
+                host: 'localhost2',
+                port: 1234
+            }, {
+                host: 'localhost2',
+                port: 1234
+            }, {
+                host: 'localhost1',
+                port: 1234
+            }]);
+
+            assert.equal(client.clients.length, 2);
+        });
+
         it('single connection info', function () {
             var client = MultipleRedis.createClient({
                 host: 'localhost',

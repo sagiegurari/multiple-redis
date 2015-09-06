@@ -101,7 +101,7 @@ var multiClient = MultipleRedis.createClient([{
 //run any command on the multi client instead of the original clients
 multiClient.set('string key', 'string val', callback);
 ```
-The rest of the API is the same as defined in the redis node library.
+The rest of the API is the same as defined in the redis node library: https://github.com/NodeRedis/node_redis#api
 <br>
 <a name="installation"></a>
 ## Installation
@@ -124,7 +124,7 @@ See full docs at: [API Docs](docs/api.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2015-09-03  | v0.0.4  | Maintenance |
+| 2015-09-06  | v0.0.5  | Maintenance |
 | 2015-09-03  | v0.0.3   | Added support for connected and server_info attributes. |
 | 2015-09-03  | v0.0.2   | Initial release. |
 
