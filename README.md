@@ -1,7 +1,7 @@
 # multiple-redis
 
 [![NPM Version](http://img.shields.io/npm/v/multiple-redis.svg?style=flat)](https://www.npmjs.org/package/multiple-redis) [![Build Status](https://img.shields.io/travis/sagiegurari/multiple-redis.svg?style=flat)](http://travis-ci.org/sagiegurari/multiple-redis) [![Coverage Status](https://img.shields.io/coveralls/sagiegurari/multiple-redis.svg?style=flat)](https://coveralls.io/r/sagiegurari/multiple-redis) [![Code Climate](https://codeclimate.com/github/sagiegurari/multiple-redis/badges/gpa.svg)](https://codeclimate.com/github/sagiegurari/multiple-redis) [![bitHound Score](https://www.bithound.io/sagiegurari/multiple-redis/badges/score.svg)](https://www.bithound.io/sagiegurari/multiple-redis) [![Inline docs](http://inch-ci.org/github/sagiegurari/multiple-redis.svg?branch=master)](http://inch-ci.org/github/sagiegurari/multiple-redis)<br>
-[![License](https://img.shields.io/npm/l/multiple-redis.svg?style=flat)](https://github.com/sagiegurari/multiple-redis/blob/master/LICENSE) [![Dependencies](http://img.shields.io/david/sagiegurari/multiple-redis.svg?style=flat)](https://david-dm.org/sagiegurari/multiple-redis) [![devDependency Status](https://img.shields.io/david/dev/sagiegurari/multiple-redis.svg?style=flat)](https://david-dm.org/sagiegurari/multiple-redis#info=devDependencies)<br>
+[![License](https://img.shields.io/npm/l/multiple-redis.svg?style=flat)](https://github.com/sagiegurari/multiple-redis/blob/master/LICENSE) [![Total Downloads](https://img.shields.io/npm/dt/multiple-redis.svg?style=flat)](https://www.npmjs.org/package/multiple-redis) [![Dependencies](http://img.shields.io/david/sagiegurari/multiple-redis.svg?style=flat)](https://david-dm.org/sagiegurari/multiple-redis) [![devDependency Status](https://img.shields.io/david/dev/sagiegurari/multiple-redis.svg?style=flat)](https://david-dm.org/sagiegurari/multiple-redis#info=devDependencies)<br>
 [![Retire Status](http://retire.insecurity.today/api/image?uri=https://raw.githubusercontent.com/sagiegurari/multiple-redis/master/package.json)](http://retire.insecurity.today/api/image?uri=https://raw.githubusercontent.com/sagiegurari/multiple-redis/master/package.json)
 
 > Run redis commands against multiple redis instances.
@@ -124,7 +124,7 @@ See full docs at: [API Docs](docs/api.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2015-09-06  | v0.0.5  | Maintenance |
+| 2015-09-08  | v0.0.6  | Maintenance |
 | 2015-09-03  | v0.0.3   | Added support for connected and server_info attributes. |
 | 2015-09-03  | v0.0.2   | Initial release. |
 
