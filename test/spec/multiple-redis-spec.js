@@ -15,11 +15,21 @@ var noop = function () {
 };
 
 var emmitter = new EventEmitter();
+var baseCreate = redis.createClient;
+function mockRedis() {
+    return (process.env.MULTIPLE_REDIS_TEST_USE_REDIS !== 'true');
+}
 redis.createClient = function (port, host, options) {
-    var redisClient = {
-        on: noop
-    };
-    emmitter.emit('create', port, host, options, function (client) {
+    var redisClient;
+    if ((!mockRedis()) && (host === 'localhost') && (port === 6379) && options && (!options.mock)) {
+        redisClient = baseCreate.call(redis, port, host, options);
+    } else {
+        redisClient = {
+            on: noop
+        };
+    }
+
+    emmitter.emit('create', redisClient, port, host, options, function (client) {
         redisClient = client;
     });
 
@@ -94,6 +104,26 @@ describe('MultipleRedis Tests', function () {
             assert.equal(client.clients.length, 2);
         });
 
+        it('connection info array with duplicates no merge', function () {
+            var client = MultipleRedis.createClient([{
+                host: 'localhost1',
+                port: 1234
+            }, {
+                host: 'localhost2',
+                port: 1234
+            }, {
+                host: 'localhost2',
+                port: 1234
+            }, {
+                host: 'localhost1',
+                port: 1234
+            }], {
+                mergeDuplicateEndpoints: false
+            });
+
+            assert.equal(client.clients.length, 4);
+        });
+
         it('single connection info', function () {
             var client = MultipleRedis.createClient({
                 host: 'localhost',
@@ -105,10 +135,12 @@ describe('MultipleRedis Tests', function () {
 
         it('connection info array with options', function (done) {
             var count = 0;
-            var validateCreate = function (port, host, options) {
+            /*jslint unparam: true*/
+            var validateCreate = function (redisClient, port, host, options) {
                 if ((port === 1234) && (host.indexOf('options') === 0)) {
                     assert.deepEqual(options, {
-                        someoption: 123
+                        someoption: 123,
+                        mergeDuplicateEndpoints: true
                     });
 
                     count++;
@@ -120,6 +152,7 @@ describe('MultipleRedis Tests', function () {
                     }
                 }
             };
+            /*jslint unparam: false*/
 
             emmitter.on('create', validateCreate);
 
@@ -136,10 +169,12 @@ describe('MultipleRedis Tests', function () {
 
         it('single connection info', function (done) {
             var count = 0;
-            var validateCreate = function (port, host, options) {
+            /*jslint unparam: true*/
+            var validateCreate = function (redisClient, port, host, options) {
                 if ((port === 1234) && (host === 'singleOption')) {
                     assert.deepEqual(options, {
-                        someoption: 'abc'
+                        someoption: 'abc',
+                        mergeDuplicateEndpoints: true
                     });
 
                     count++;
@@ -151,6 +186,7 @@ describe('MultipleRedis Tests', function () {
                     }
                 }
             };
+            /*jslint unparam: false*/
 
             emmitter.on('create', validateCreate);
 
@@ -546,6 +582,69 @@ describe('MultipleRedis Tests', function () {
                     assert.equal(count, 2);
 
                     done();
+                });
+            });
+        });
+
+        describe('set and get tests', function () {
+            it('valid', function (done) {
+                this.timeout(10000);
+
+                if (mockRedis()) {
+                    /*jslint unparam: true*/
+                    var modifyClient = function (redisClient, port, host, options) {
+                        if ((host === 'localhost') && (port === 6379) && options && (!options.mock)) {
+                            redisClient.send_command = function (name, args, callback) {
+                                if (name === 'set') {
+                                    redisClient[args[0]] = args[1];
+
+                                    callback(undefined, 'OK');
+                                } else if (name === 'get') {
+                                    callback(undefined, redisClient[args[0]]);
+                                } else {
+                                    callback(new Error('Unsupported'));
+                                }
+                            };
+                        }
+                    };
+                    /*jslint unparam: false*/
+
+                    emmitter.on('create', modifyClient);
+
+                    var orgDone = done;
+                    done = function () {
+                        emmitter.removeListener('create', modifyClient);
+                        orgDone();
+                    };
+                }
+
+                var client = MultipleRedis.createClient([{
+                    host: 'localhost',
+                    port: 6379
+                }, {
+                    host: 'localhost',
+                    port: 6379
+                }], {
+                    mergeDuplicateEndpoints: false,
+                    mock: false
+                });
+
+                client.set('my key', 'my value', function (error1, response1) {
+                    if (error1) {
+                        assert.fail();
+                    }
+                    assert.isDefined(response1);
+
+                    setTimeout(function () {
+                        client.get('my key', function (error2, response2) {
+                            if (error2) {
+                                assert.fail();
+                            }
+                            assert.equal(response2, 'my value');
+
+                            done();
+                        });
+                    }, 50);
                 });
             });
         });

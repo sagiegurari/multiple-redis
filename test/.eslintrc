@@ -14,6 +14,7 @@
     "no-ternary": 0,
     "spaced-comment": 0,
     "callback-return": 0,
-    "camelcase": 0
+    "camelcase": 0,
+    "no-invalid-this": 0
   }
 }
