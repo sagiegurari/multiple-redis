@@ -21,14 +21,15 @@
 Proxies requests to one or more redis clients.
 
 
-| Param | Type | Description |
-| --- | --- | --- |
-| params | <code>object</code> | The client init params |
-| [params.clients] | <code>Array</code> &#124; <code>redis</code> | The redis client/s (if not provided, the connection info must be provided instead) |
-| [params.connectionInfo] | <code>Array</code> &#124; <code>object</code> | The redis client/s connection info (if not provided, the redis clients must be provided) |
-| [params.connectionInfo.host] | <code>string</code> | The redis host |
-| [params.connectionInfo.port] | <code>number</code> | The redis port |
-| [params.options] | <code>Array</code> | Used when this client creates the redis clients (see redis module for more details) |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>object</code> |  | The client init params |
+| [params.clients] | <code>Array</code> &#124; <code>redis</code> |  | The redis client/s (if not provided, the connection info must be provided instead) |
+| [params.connectionInfo] | <code>Array</code> &#124; <code>object</code> |  | The redis client/s connection info (if not provided, the redis clients must be provided) |
+| [params.connectionInfo.host] | <code>string</code> |  | The redis host |
+| [params.connectionInfo.port] | <code>number</code> |  | The redis port |
+| [params.options] | <code>Array</code> |  | Used when this client creates the redis clients (see redis module for more details) |
+| [params.options.mergeDuplicateEndpoints] | <code>boolean</code> | <code>true</code> | True to merge duplicate endpoint configurations and prevent needless redis client connections |
 
 <a name="MultiRedisClient.connected"></a>
 ### MultiRedisClient.connected : <code>boolean</code>
@@ -95,12 +96,13 @@ multiClient.set('string key', 'string val', callback);
 **Returns**: <code>[MultiRedisClient](#MultiRedisClient)</code> - The multiple redis client instance  
 **Access:** public  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| connectionInfo | <code>Array</code> &#124; <code>object</code> | The redis client/s connection info |
-| connectionInfo.host | <code>string</code> | The redis host |
-| connectionInfo.port | <code>number</code> | The redis port |
-| [options] | <code>Array</code> | Used when this client creates the redis clients (see redis module for more details) |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| connectionInfo | <code>Array</code> &#124; <code>object</code> |  | The redis client/s connection info |
+| connectionInfo.host | <code>string</code> |  | The redis host |
+| connectionInfo.port | <code>number</code> |  | The redis port |
+| [options] | <code>Array</code> |  | Used when this client creates the redis clients (see redis module for more details) |
+| [options.mergeDuplicateEndpoints] | <code>boolean</code> | <code>true</code> | True to merge duplicate endpoint configurations and prevent needless redis client connections |
 
 **Example**  
 ```js
