@@ -7,7 +7,7 @@
 > Run redis commands against multiple redis instances.
 
 * [Overview](#overview)
-  * [When To Use](#whentouse)
+  * [Why?](#why)
   * [How This Library Works](#howlibworks)
   * [Simple Scenario](#scenario)
 * [Usage](#usage)
@@ -23,19 +23,27 @@ This library enables to submit redis commands to multiple redis instances.<br>
 The client interface is the same as the 'redis' node package at: https://github.com/NodeRedis/node_redis<br>
 However, every command actually invokes multiple redis backends.
 
-<a name="whentouse"></a>
-### When To Use
+<a name="why"></a>
+### Why?
 Generally in production you would like a failover capability for your redis server.<br>
 Working with only 1 redis instance can cause your entire production system to fail in case redis goes down for any reason.<br>
 For example, when using redis as an express session store and redis is down, users HTTP requests will be rejected.<br>
-Redis does come with a built in failover and clustering capabilities via master/slave solution and monitoring via redis sentinel.<br>
-However, those solutions sometimes might cause other issues, for example, express redis works with only 1 redis client.<br>
-If that redis client is not available, it will not failover to the slave redis.<br>
-There are other libraries to resolve the issue, but the basic library does not provide any solution.<br>
-Other issues might be if you failover to the slave redis but it is only readonly mode (by default slave redis is read only).<br>
-<br>
-**This does not mean that I do not support the Redis master/slave + sentinal solution** but sometimes using multiple
-independent Redis servers for none critical data serves as a better solution which is much more simple to deploy and manage in production. 
+So how can we setup high availability?<br>
+You could setup redis master and redis slave. That would have those 2 redis servers sync data between them and you can read it from both.<br>
+But what if the master redis goes down? If you didn't setup the slave as writable, you are in a possible problem until the master is up.<br>
+If you did, again there is an issue when master goes back up.<br>
+Not to mention you have to setup a deployment installation process to set 1 redis for master and 1 for slave (well... at least one).
+So one solution is to be able to change the master in runtime in such a scenario, so now you have a choice to deploy sentinal.<br>
+But that is even more work on the production team and what if sentinal goes down? Who monitors the monitor?<br>
+So another choice is to let the app code detect that the master is down and let it send the commands to select a new master from the existing slaves.<br>
+But you have multiple instances of your app, and they can all try to select a new master and cause issues for your redis servers.<br>
+So existing solutions don't work? Of course they do. But they are a pain to configure, manage and monitor in production.<br>
+This is where this library comes in.<br>
+What if you had multiple standalone redis servers that didn't know of each other?<br>
+Your app ensures they are sync or at least it knows to pick up the data from the correct place.<br>
+If one goes down, no problem. You are running with the redis servers that are still up and they too hold the data you need.<br>
+**Important to explain, this does not mean that I do not support the Redis master/slave + sentinal solution** but sometimes using multiple
+independent Redis servers serves as a better solution which is much more simple to deploy and manage in production. 
 
 <a name="howlibworks"></a>
 ### How This Library Works
@@ -44,14 +52,15 @@ This library basically does 2 main things.
 it finds a redis which provides data for the get command.<br>
 Any error, or any redis which is unable to provide the data is ignored.<br>
 Once a specific redis provides the data, the next redis servers are skipped and the command callback is invoked with that data.
-* Set/Other commands - When a non get command is called, all redis servers are invoked in parallel with the same command to 
-ensure that all redis servers are updated.<br>
-If any redis server was able to process the command, the original command callback will receive a valid response.<br>
-
-This means that at least once redis server needs to work good for the main client to notify the calling code that everything works ok.
-<br>
+* Set/Other commands - When a non 'get' command is called, all redis servers are invoked in parallel with the same command to 
+ensure that all redis servers are updated with latest data.<br>
+If at least redis server was able to process the command, the original command callback will receive a valid response.<br>
+This means that at least once redis server needs to work good for the main client to notify the calling code that everything works ok.<br>
+To ensure you don't get outdated data, the redis servers should work without persistence to disk.<br>
+So when a redis server goes back up, it is empty. But you still get the data from the other redis that was up and holds that data.<br>
+When that key gets updated with new data, both redis servers are now holding the latest version.<br>
 A side affect of this solution is that every publish event would be received multiple times by the subscribers, 
-so you need to code accordingly and prevent any possible issues.
+so you need to code accordingly and prevent any possible issues from handling duplicate published messages.
 
 <a name="scenario"></a>
 ### Simple Scenario
@@ -62,8 +71,7 @@ When a new session is created, it will be created in all redis servers (in this 
 In case the first redis server suddenly fails, the session store is still able to fetch and update the session data from the
 second redis server.<br>
 When the first redis server comes back up, the session is still available to the session store from the second redis server and
-any session modification (due to some HTTP request) will cause both redis servers to now hold the latest express session data.
-<br>
+any session modification (due to some HTTP request) will cause both redis servers to now hold the latest express session data.<br>
 It is by no means, not a perfect solution, but it does has its advantages.<br>
 First and foremost, its simple deployment requirements.
 
@@ -124,7 +132,7 @@ See full docs at: [API Docs](docs/api.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2015-10-06  | v0.0.9  | Maintenance |
+| 2015-10-15  | v0.0.10 | Maintenance |
 | 2015-09-23  | v0.0.7  | Upgrade to redis 2.0 |
 | 2015-09-08  | v0.0.6  | Maintenance |
 | 2015-09-03  | v0.0.3  | Added support for connected and server_info attributes. |
