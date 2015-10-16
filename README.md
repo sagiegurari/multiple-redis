@@ -132,7 +132,7 @@ See full docs at: [API Docs](docs/api.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2015-10-15  | v0.0.11 | Maintenance |
+| 2015-10-16  | v0.0.12 | Maintenance |
 | 2015-09-23  | v0.0.7  | Upgrade to redis 2.0 |
 | 2015-09-08  | v0.0.6  | Maintenance |
 | 2015-09-03  | v0.0.3  | Added support for connected and server_info attributes. |
