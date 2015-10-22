@@ -13,7 +13,7 @@
   * [#resetState()](#MultiRedisClient+resetState) ℗
   * [.setupPrototype()](#MultiRedisClient.setupPrototype) ℗
   * _static_
-    * [.createClient(clients)](#MultiRedisClient.createClient) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
+    * [.createClient(clients, [options])](#MultiRedisClient.createClient) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
     * [.createClient(connectionInfo, [options])](#MultiRedisClient.createClient) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
 
 <a name="new_MultiRedisClient_new"></a>
@@ -29,6 +29,7 @@ Proxies requests to one or more redis clients.
 | [params.connectionInfo.host] | <code>string</code> |  | The redis host |
 | [params.connectionInfo.port] | <code>number</code> |  | The redis port |
 | [params.options] | <code>Array</code> |  | Used when this client creates the redis clients (see redis module for more details) |
+| [params.options.childCommandTimeout] | <code>number</code> | <code>1000</code> | The per client command timeout |
 | [params.options.mergeDuplicateEndpoints] | <code>boolean</code> | <code>true</code> | True to merge duplicate endpoint configurations and prevent needless redis client connections |
 
 <a name="MultiRedisClient.connected"></a>
@@ -65,16 +66,18 @@ Adds all functions with proxy capabilities.
 
 **Access:** private  
 <a name="MultiRedisClient.createClient"></a>
-### MultiRedisClient.createClient(clients) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
+### MultiRedisClient.createClient(clients, [options]) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
 Creates and returns a new MultiRedisClient instance.
 
 **Kind**: static method of <code>[MultiRedisClient](#MultiRedisClient)</code>  
 **Returns**: <code>[MultiRedisClient](#MultiRedisClient)</code> - The multiple redis client instance  
 **Access:** public  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| clients | <code>Array</code> &#124; <code>redis</code> | The redis client/s |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| clients | <code>Array</code> &#124; <code>redis</code> |  | The redis client/s |
+| [options] | <code>Array</code> |  | Various options |
+| [options.childCommandTimeout] | <code>number</code> | <code>1000</code> | The per client command timeout |
 
 **Example**  
 ```js
@@ -102,6 +105,7 @@ multiClient.set('string key', 'string val', callback);
 | connectionInfo.host | <code>string</code> |  | The redis host |
 | connectionInfo.port | <code>number</code> |  | The redis port |
 | [options] | <code>Array</code> |  | Used when this client creates the redis clients (see redis module for more details) |
+| [options.childCommandTimeout] | <code>number</code> | <code>1000</code> | The per client command timeout |
 | [options.mergeDuplicateEndpoints] | <code>boolean</code> | <code>true</code> | True to merge duplicate endpoint configurations and prevent needless redis client connections |
 
 **Example**  

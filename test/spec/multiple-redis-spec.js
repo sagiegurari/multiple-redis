@@ -10,15 +10,16 @@ var EventEmitter = events.EventEmitter;
 var EventEmitterEnhancer = require('event-emitter-enhancer');
 var MultipleRedis = require('../../');
 
-var noop = function () {
+var noop = function noop() {
     return undefined;
 };
 
 var emmitter = new EventEmitter();
 var baseCreate = redis.createClient;
-function mockRedis() {
+var mockRedis = function mockRedis() {
     return (process.env.MULTIPLE_REDIS_TEST_USE_REDIS !== 'true');
-}
+};
+
 redis.createClient = function (port, host, options) {
     var redisClient;
     if ((!mockRedis()) && (host === 'localhost') && (port === 6379) && options && (!options.mock)) {
@@ -50,6 +51,18 @@ describe('MultipleRedis Tests', function () {
         it('empty array', function () {
             try {
                 MultipleRedis.createClient([]);
+                assert.fail();
+            } catch (error) {
+                assert.isDefined(error);
+            }
+        });
+
+        it('too many arguments', function () {
+            try {
+                MultipleRedis.createClient([{
+                    host: 'localhost1',
+                    port: 1234
+                }], {}, {});
                 assert.fail();
             } catch (error) {
                 assert.isDefined(error);
@@ -139,6 +152,7 @@ describe('MultipleRedis Tests', function () {
             var validateCreate = function (redisClient, port, host, options) {
                 if ((port === 1234) && (host.indexOf('options') === 0)) {
                     assert.deepEqual(options, {
+                        enable_offline_queue: false,
                         someoption: 123,
                         mergeDuplicateEndpoints: true
                     });
@@ -173,6 +187,7 @@ describe('MultipleRedis Tests', function () {
             var validateCreate = function (redisClient, port, host, options) {
                 if ((port === 1234) && (host === 'singleOption')) {
                     assert.deepEqual(options, {
+                        enable_offline_queue: false,
                         someoption: 'abc',
                         mergeDuplicateEndpoints: true
                     });
