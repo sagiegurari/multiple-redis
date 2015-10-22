@@ -632,6 +632,67 @@ describe('MultipleRedis Tests', function () {
                 assert.equal(count, 1);
             });
 
+            it('get partial timeout', function (done) {
+                var count = 0;
+                var createClient = function () {
+                    return {
+                        on: noop,
+                        send_command: function (name, args, callback) {
+                            count++;
+
+                            assert.equal(name, 'get');
+                            assert.deepEqual(args, ['my key']);
+                            assert.isFunction(callback);
+
+                            if (count > 1) {
+                                callback(null, 'my value');
+                            }
+                        }
+                    };
+                };
+                var client1 = createClient();
+                var client2 = createClient();
+                var client = MultipleRedis.createClient([client1, client2], {
+                    childCommandTimeout: 10
+                });
+
+                client.get('my key', function (error, response) {
+                    assert.isNull(error);
+                    assert.equal(response, 'my value');
+                    assert.equal(count, 2);
+
+                    done();
+                });
+            });
+
+            it('get full timeout', function (done) {
+                var count = 0;
+                var createClient = function () {
+                    return {
+                        on: noop,
+                        send_command: function (name, args, callback) {
+                            count++;
+
+                            assert.equal(name, 'get');
+                            assert.deepEqual(args, ['my key']);
+                            assert.isFunction(callback);
+                        }
+                    };
+                };
+                var client1 = createClient();
+                var client2 = createClient();
+                var client = MultipleRedis.createClient([client1, client2], {
+                    childCommandTimeout: 10
+                });
+
+                client.get('my key', function (error) {
+                    assert.isDefined(error);
+                    assert.equal(count, 2);
+
+                    done();
+                });
+            });
+
             it('get error', function (done) {
                 var count = 0;
                 var createClient = function () {
