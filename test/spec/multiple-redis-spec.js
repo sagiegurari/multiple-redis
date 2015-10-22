@@ -181,6 +181,39 @@ describe('MultipleRedis Tests', function () {
             });
         });
 
+        it('client timeout option negative value', function () {
+            var client = MultipleRedis.createClient({
+                host: 'options1',
+                port: 1234
+            }, {
+                childCommandTimeout: -10
+            });
+
+            assert.equal(client.childCommandTimeout, 10000);
+        });
+
+        it('client timeout option samller than 10 seconds', function () {
+            var client = MultipleRedis.createClient({
+                host: 'options1',
+                port: 1234
+            }, {
+                childCommandTimeout: 6
+            });
+
+            assert.equal(client.childCommandTimeout, 6);
+        });
+
+        it('client timeout option bigger than 10 seconds', function () {
+            var client = MultipleRedis.createClient({
+                host: 'options1',
+                port: 1234
+            }, {
+                childCommandTimeout: 20000
+            });
+
+            assert.equal(client.childCommandTimeout, 20000);
+        });
+
         it('single connection info', function (done) {
             var count = 0;
             /*jslint unparam: true*/
