@@ -132,7 +132,7 @@ See full docs at: [API Docs](docs/api.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2015-10-22  | v0.0.14 | Timeout child commands (see childCommandTimeout option) |
+| 2015-10-22  | v0.0.15 | Timeout child commands (see childCommandTimeout option) |
 | 2015-10-16  | v0.0.12 | Maintenance |
 | 2015-09-23  | v0.0.7  | Upgrade to redis 2.0 |
 | 2015-09-08  | v0.0.6  | Maintenance |
