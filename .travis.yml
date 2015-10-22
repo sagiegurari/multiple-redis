@@ -6,6 +6,6 @@ node_js:
   - "0.10"
   - "iojs"
 env:
-  - MULTIPLE_REDIS_TEST_USE_REDIS=true
+  - MULTIPLE_REDIS_TEST_USE_REDIS=false
 services:
   - redis-server
