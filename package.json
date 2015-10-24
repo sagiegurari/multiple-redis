@@ -1,6 +1,6 @@
 {
   "name": "multiple-redis",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Run redis commands against multiple redis instances.",
   "main": "index.js",
   "directories": {
@@ -42,6 +42,7 @@
     "grunt-jsonlint": "latest",
     "grunt-mocha-test": "latest",
     "grunt-todos": "latest",
+    "husky": "latest",
     "load-grunt-tasks": "latest",
     "mocha": "latest",
     "mocha-lcov-reporter": "latest",
@@ -57,6 +58,7 @@
     "clean": "grunt cleanup",
     "lint": "grunt lint",
     "docs": "grunt docs",
-    "build": "grunt build"
+    "build": "grunt build",
+    "precommit": "npm run build"
   }
 }
