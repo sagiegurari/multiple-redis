@@ -1,12 +1,12 @@
 {
   "name": "multiple-redis",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Run redis commands against multiple redis instances.",
-  "main": "index.js",
-  "directories": {
-    "lib": "lib",
-    "test": "test/spec"
+  "author": {
+    "name": "Sagie Gur-Ari",
+    "email": "sagiegurari@gmail.com"
   },
+  "license": "Apache-2.0",
   "homepage": "http://github.com/sagiegurari/multiple-redis",
   "repository": {
     "type": "git",
@@ -20,9 +20,22 @@
     "high availability",
     "require"
   ],
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test/spec"
+  },
+  "scripts": {
+    "test": "grunt test",
+    "clean": "grunt cleanup",
+    "lint": "grunt lint",
+    "docs": "grunt docs",
+    "build": "grunt build",
+    "precommit": "npm run build"
+  },
   "dependencies": {
-    "async": "^1.4.2",
-    "redis": "^2.2.5"
+    "async": "^1.5.0",
+    "redis": "^2.3.0"
   },
   "devDependencies": {
     "blanket": "latest",
@@ -47,18 +60,5 @@
     "mocha": "latest",
     "mocha-lcov-reporter": "latest",
     "time-grunt": "latest"
-  },
-  "author": {
-    "name": "Sagie Gur-Ari",
-    "email": "sagiegurari@gmail.com"
-  },
-  "license": "Apache-2.0",
-  "scripts": {
-    "test": "grunt test",
-    "clean": "grunt cleanup",
-    "lint": "grunt lint",
-    "docs": "grunt docs",
-    "build": "grunt build",
-    "precommit": "npm run build"
   }
 }
