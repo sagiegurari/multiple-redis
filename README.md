@@ -43,7 +43,7 @@ What if you had multiple standalone redis servers that didn't know of each other
 Your app ensures they are sync or at least it knows to pick up the data from the correct place.<br>
 If one goes down, no problem. You are running with the redis servers that are still up and they too hold the data you need.<br>
 **Important to explain, this does not mean that I do not support the Redis master/slave + sentinal solution** but sometimes using multiple
-independent Redis servers serves as a better solution which is much more simple to deploy and manage in production. 
+independent Redis servers serves as a better solution which is much more simple to deploy and manage in production.
 
 <a name="howlibworks"></a>
 ### How This Library Works
@@ -52,20 +52,20 @@ This library basically does 2 main things.
 it finds a redis which provides data for the get command.<br>
 Any error, or any redis which is unable to provide the data is ignored.<br>
 Once a specific redis provides the data, the next redis servers are skipped and the command callback is invoked with that data.
-* Set/Other commands - When a non 'get' command is called, all redis servers are invoked in parallel with the same command to 
+* Set/Other commands - When a non 'get' command is called, all redis servers are invoked in parallel with the same command to
 ensure that all redis servers are updated with latest data.<br>
 If at least redis server was able to process the command, the original command callback will receive a valid response.<br>
 This means that at least once redis server needs to work good for the main client to notify the calling code that everything works ok.<br>
 To ensure you don't get outdated data, the redis servers should work without persistence to disk.<br>
 So when a redis server goes back up, it is empty. But you still get the data from the other redis that was up and holds that data.<br>
 When that key gets updated with new data, both redis servers are now holding the latest version.<br>
-A side affect of this solution is that every publish event would be received multiple times by the subscribers, 
+A side affect of this solution is that every publish event would be received multiple times by the subscribers,
 so you need to code accordingly and prevent any possible issues from handling duplicate published messages.
 
 <a name="scenario"></a>
 ### Simple Scenario
 Let us take the express redis session store as an example.<br>
-Since this library provides the same redis interface as the common redis client, you can provide this library to the 
+Since this library provides the same redis interface as the common redis client, you can provide this library to the
 redis session store.<br>
 When a new session is created, it will be created in all redis servers (in this example, lets assume we have 2).<br>
 In case the first redis server suddenly fails, the session store is still able to fetch and update the session data from the
@@ -132,7 +132,7 @@ See full docs at: [API Docs](docs/api.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2015-11-04  | v0.0.19 | Maintenance |
+| 2015-11-05  | v0.0.20 | Maintenance |
 | 2015-10-22  | v0.0.16 | Timeout child commands (see childCommandTimeout option) |
 | 2015-10-16  | v0.0.12 | Maintenance |
 | 2015-09-23  | v0.0.7  | Upgrade to redis 2.0 |
