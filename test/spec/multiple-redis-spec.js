@@ -800,22 +800,24 @@ describe('MultipleRedis Tests', function () {
                     mock: false
                 });
 
-                client.set('my key', 'my value', function (error1, response1) {
-                    if (error1) {
-                        assert.fail();
-                    }
-                    assert.isDefined(response1);
+                client.once('ready', function () {
+                    client.set('my key', 'my value', function (error1, response1) {
+                        if (error1) {
+                            assert.fail();
+                        }
+                        assert.isDefined(response1);
 
-                    setTimeout(function () {
-                        client.get('my key', function (error2, response2) {
-                            if (error2) {
-                                assert.fail();
-                            }
-                            assert.equal(response2, 'my value');
+                        setTimeout(function () {
+                            client.get('my key', function (error2, response2) {
+                                if (error2) {
+                                    assert.fail();
+                                }
+                                assert.equal(response2, 'my value');
 
-                            done();
-                        });
-                    }, 50);
+                                done();
+                            });
+                        }, 50);
+                    });
                 });
             });
         });
