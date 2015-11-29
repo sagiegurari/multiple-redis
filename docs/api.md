@@ -90,8 +90,10 @@ var client2 = redis.createClient(...);
 var MultipleRedis = require('multiple-redis');
 var multiClient = MultipleRedis.createClient([client1, client2]);
 
-//run any command on the multi client instead of the original clients
-multiClient.set('string key', 'string val', callback);
+multiClient.once('ready', function onReady() {
+  //run any command on the multi client instead of the original clients
+  multiClient.set('string key', 'string val', callback);
+});
 ```
 <a name="MultiRedisClient.createClient"></a>
 ### MultiRedisClient.createClient(connectionInfo, [options]) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
@@ -120,6 +122,8 @@ var multiClient = MultipleRedis.createClient([{
   port: 6379
 }], options);
 
-//run any command on the multi client instead of the original clients
-multiClient.set('string key', 'string val', callback);
+multiClient.once('ready', function onReady() {
+  //run any command on the multi client instead of the original clients
+  multiClient.set('string key', 'string val', callback);
+});
 ```

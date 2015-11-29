@@ -89,8 +89,10 @@ var client2 = redis.createClient(...);
 var MultipleRedis = require('multiple-redis');
 var multiClient = MultipleRedis.createClient([client1, client2]);
 
-//run any command on the multi client instead of the original clients
-multiClient.set('string key', 'string val', callback);
+multiClient.once('ready', function onReady() {
+  //run any command on the multi client instead of the original clients
+  multiClient.set('string key', 'string val', callback);
+});
 ```
 
 Or
@@ -106,8 +108,10 @@ var multiClient = MultipleRedis.createClient([{
    port: 6379
 }], options);
 
-//run any command on the multi client instead of the original clients
-multiClient.set('string key', 'string val', callback);
+multiClient.once('ready', function onReady() {
+  //run any command on the multi client instead of the original clients
+  multiClient.set('string key', 'string val', callback);
+});
 ```
 The rest of the API is the same as defined in the redis node library: https://github.com/NodeRedis/node_redis#api
 <br>
@@ -132,7 +136,7 @@ See full docs at: [API Docs](docs/api.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2015-11-29  | v0.0.25 | Maintenance |
+| 2015-11-29  | v0.0.26 | Maintenance |
 | 2015-10-22  | v0.0.16 | Timeout child commands (see childCommandTimeout option) |
 | 2015-10-16  | v0.0.12 | Maintenance |
 | 2015-09-23  | v0.0.7  | Upgrade to redis 2.0 |
