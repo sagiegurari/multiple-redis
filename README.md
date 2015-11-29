@@ -1,6 +1,6 @@
 # multiple-redis
 
-[![NPM Version](http://img.shields.io/npm/v/multiple-redis.svg?style=flat)](https://www.npmjs.org/package/multiple-redis) [![Build Status](https://travis-ci.org/sagiegurari/multiple-redis.svg)](http://travis-ci.org/sagiegurari/multiple-redis) [![Coverage Status](https://coveralls.io/repos/sagiegurari/multiple-redis/badge.svg)](https://coveralls.io/r/sagiegurari/multiple-redis) [![Code Climate](https://codeclimate.com/github/sagiegurari/multiple-redis/badges/gpa.svg)](https://codeclimate.com/github/sagiegurari/multiple-redis) [![bitHound Score](https://www.bithound.io/sagiegurari/multiple-redis/badges/score.svg)](https://www.bithound.io/sagiegurari/multiple-redis) [![Inline docs](http://inch-ci.org/github/sagiegurari/multiple-redis.svg?branch=master)](http://inch-ci.org/github/sagiegurari/multiple-redis)<br>
+[![NPM Version](http://img.shields.io/npm/v/multiple-redis.svg?style=flat)](https://www.npmjs.org/package/multiple-redis) [![Build Status](https://travis-ci.org/sagiegurari/multiple-redis.svg)](http://travis-ci.org/sagiegurari/multiple-redis) [![Coverage Status](https://coveralls.io/repos/sagiegurari/multiple-redis/badge.svg)](https://coveralls.io/r/sagiegurari/multiple-redis) [![Code Climate](https://codeclimate.com/github/sagiegurari/multiple-redis/badges/gpa.svg)](https://codeclimate.com/github/sagiegurari/multiple-redis) [![bitHound Code](https://www.bithound.io/github/sagiegurari/multiple-redis/badges/code.svg)](https://www.bithound.io/github/sagiegurari/multiple-redis) [![Inline docs](http://inch-ci.org/github/sagiegurari/multiple-redis.svg?branch=master)](http://inch-ci.org/github/sagiegurari/multiple-redis)<br>
 [![License](https://img.shields.io/npm/l/multiple-redis.svg?style=flat)](https://github.com/sagiegurari/multiple-redis/blob/master/LICENSE) [![Total Downloads](https://img.shields.io/npm/dt/multiple-redis.svg?style=flat)](https://www.npmjs.org/package/multiple-redis) [![Dependency Status](https://david-dm.org/sagiegurari/multiple-redis.svg)](https://david-dm.org/sagiegurari/multiple-redis) [![devDependency Status](https://david-dm.org/sagiegurari/multiple-redis/dev-status.svg)](https://david-dm.org/sagiegurari/multiple-redis#info=devDependencies)<br>
 [![Retire Status](http://retire.insecurity.today/api/image?uri=https://raw.githubusercontent.com/sagiegurari/multiple-redis/master/package.json)](http://retire.insecurity.today/api/image?uri=https://raw.githubusercontent.com/sagiegurari/multiple-redis/master/package.json)
 
@@ -132,7 +132,7 @@ See full docs at: [API Docs](docs/api.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2015-11-21  | v0.0.23 | Maintenance |
+| 2015-11-29  | v0.0.24 | Maintenance |
 | 2015-10-22  | v0.0.16 | Timeout child commands (see childCommandTimeout option) |
 | 2015-10-16  | v0.0.12 | Maintenance |
 | 2015-09-23  | v0.0.7  | Upgrade to redis 2.0 |
