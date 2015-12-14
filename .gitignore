@@ -1,5 +1,5 @@
 .idea
-target
-.temp
+bower_components
 node_modules
 npm-debug.log
+target

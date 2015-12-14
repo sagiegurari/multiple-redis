@@ -14,6 +14,7 @@
 * [Installation](#installation)
 * [Limitations](#limitations)
 * [API Documentation](docs/api.md)
+* [Contributing](docs/CONTRIBUTING.md)
 * [Release History](#history)
 * [License](#license)
 
@@ -131,12 +132,15 @@ Also Multi is currently not supported.
 ## API Documentation
 See full docs at: [API Docs](docs/api.md)
 
+## Contributing
+See [contributing guide](docs/CONTRIBUTING.md)
+
 <a name="history"></a>
 ## Release History
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2015-12-13  | v0.0.32 | Maintenance |
+| 2015-12-14  | v0.0.33 | Maintenance |
 | 2015-10-22  | v0.0.16 | Timeout child commands (see childCommandTimeout option) |
 | 2015-10-16  | v0.0.12 | Maintenance |
 | 2015-09-23  | v0.0.7  | Upgrade to redis 2.0 |
