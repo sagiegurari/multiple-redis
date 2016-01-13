@@ -6,15 +6,12 @@
 **Author:** Sagie Gur-Ari  
 
 * [MultiRedisClient](#MultiRedisClient) ⇐ <code>EventEmitter</code>
-    * [new MultiRedisClient(params)](#new_MultiRedisClient_new)
-    * [.connected](#MultiRedisClient.connected) : <code>boolean</code>
-    * [.server_info](#MultiRedisClient.server_info) : <code>object</code>
-    * [#getUniqueEndpoints(connectionInfo)](#MultiRedisClient+getUniqueEndpoints) ⇒ <code>Array</code> ℗
-    * [#resetState()](#MultiRedisClient+resetState) ℗
-    * [.setupPrototype()](#MultiRedisClient.setupPrototype) ℗
-    * _static_
-        * [.createClient(clients, [options])](#MultiRedisClient.createClient) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
-        * [.createClient(connectionInfo, [options])](#MultiRedisClient.createClient) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
+  * [new MultiRedisClient(params)](#new_MultiRedisClient_new)
+  * [.connected](#MultiRedisClient.connected) : <code>boolean</code>
+  * [.server_info](#MultiRedisClient.server_info) : <code>object</code>
+  * _static_
+    * [.createClient(clients, [options])](#MultiRedisClient.createClient) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
+    * [.createClient(connectionInfo, [options])](#MultiRedisClient.createClient) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
 
 <a name="new_MultiRedisClient_new"></a>
 ### new MultiRedisClient(params)
@@ -42,29 +39,6 @@ True when at least one internal redis client is connected.
 After the ready probe completes, the results from the INFO command are saved in this attribute.
 
 **Access:** public  
-<a name="MultiRedisClient+getUniqueEndpoints"></a>
-### MultiRedisClient#getUniqueEndpoints(connectionInfo) ⇒ <code>Array</code> ℗
-Returns the connection info array without duplicates.
-
-**Returns**: <code>Array</code> - The connection info array without duplicates  
-**Access:** private  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| connectionInfo | <code>Array</code> | The redis client/s connection info |
-| connectionInfo.host | <code>string</code> | The redis host |
-| connectionInfo.port | <code>number</code> | The redis port |
-
-<a name="MultiRedisClient+resetState"></a>
-### MultiRedisClient#resetState() ℗
-Resets the redis attributes based on the status of the internal redis clients.
-
-**Access:** private  
-<a name="MultiRedisClient.setupPrototype"></a>
-### MultiRedisClient.setupPrototype() ℗
-Adds all functions with proxy capabilities.
-
-**Access:** private  
 <a name="MultiRedisClient.createClient"></a>
 ### MultiRedisClient.createClient(clients, [options]) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
 Creates and returns a new MultiRedisClient instance.
