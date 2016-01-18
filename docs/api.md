@@ -6,12 +6,12 @@
 **Author:** Sagie Gur-Ari  
 
 * [MultiRedisClient](#MultiRedisClient) ⇐ <code>EventEmitter</code>
-  * [new MultiRedisClient(params)](#new_MultiRedisClient_new)
-  * [.connected](#MultiRedisClient.connected) : <code>boolean</code>
-  * [.server_info](#MultiRedisClient.server_info) : <code>object</code>
-  * _static_
-    * [.createClient(clients, [options])](#MultiRedisClient.createClient) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
-    * [.createClient(connectionInfo, [options])](#MultiRedisClient.createClient) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
+    * [new MultiRedisClient(params)](#new_MultiRedisClient_new)
+    * [.connected](#MultiRedisClient.connected) : <code>boolean</code>
+    * [.server_info](#MultiRedisClient.server_info) : <code>object</code>
+    * _static_
+        * [.createClient(clients, [options])](#MultiRedisClient.createClient) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
+        * [.createClient(connectionInfo, [options])](#MultiRedisClient.createClient) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
 
 <a name="new_MultiRedisClient_new"></a>
 ### new MultiRedisClient(params)
