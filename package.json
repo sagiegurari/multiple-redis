@@ -1,6 +1,6 @@
 {
   "name": "multiple-redis",
-  "version": "0.0.40",
+  "version": "0.0.41",
   "description": "Run redis commands against multiple redis instances.",
   "author": {
     "name": "Sagie Gur-Ari",
@@ -62,6 +62,12 @@
     "load-grunt-tasks": "latest",
     "mocha": "latest",
     "mocha-lcov-reporter": "latest",
-    "time-grunt": "latest"
+    "time-grunt": "latest",
+    "travis-cov": "latest"
+  },
+  "config": {
+    "travis-cov": {
+      "threshold": 100
+    }
   }
 }
