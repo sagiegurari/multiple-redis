@@ -11,6 +11,7 @@
   * [How This Library Works](#howlibworks)
   * [Simple Scenario](#scenario)
 * [Usage](#usage)
+* [Debug](#debug)
 * [Installation](#installation)
 * [Limitations](#limitations)
 * [API Documentation](docs/api.md)
@@ -116,6 +117,12 @@ multiClient.once('ready', function onReady() {
 ```
 The rest of the API is the same as defined in the redis node library: https://github.com/NodeRedis/node_redis#api
 <br>
+<a name="debug"></a>
+## Debug
+In order to turn on debug messages, use the standard nodejs NODE_DEBUG environment variable.
+````
+NODE_DEBUG=multiple-redis
+````
 <a name="installation"></a>
 ## Installation
 In order to use this library, just run the following npm install command:
@@ -140,7 +147,7 @@ See [contributing guide](docs/CONTRIBUTING.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2016-02-10  | v0.0.43 | Maintenance |
+| 2016-02-10  | v0.0.44 | Maintenance |
 | 2015-10-22  | v0.0.16 | Timeout child commands (see childCommandTimeout option) |
 | 2015-10-16  | v0.0.12 | Maintenance |
 | 2015-09-23  | v0.0.7  | Upgrade to redis 2.0 |
