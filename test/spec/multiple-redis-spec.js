@@ -179,6 +179,56 @@ describe('MultipleRedis Tests', function () {
             });
         });
 
+        it('empty options', function (done) {
+            /*jslint unparam: true*/
+            var validateCreate = function (redisClient, port, host, options) {
+                /*jshint camelcase: false*/
+                //jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+                /*eslint-disable camelcase*/
+                assert.isFalse(options.enable_offline_queue);
+                /*eslint-enable camelcase*/
+                //jscs:enable requireCamelCaseOrUpperCaseIdentifiers
+                /*jshint camelcase: true*/
+
+                emitter.removeListener('create', validateCreate);
+                done();
+            };
+            /*jslint unparam: false*/
+
+            emitter.on('create', validateCreate);
+
+            MultipleRedis.createClient({
+                host: 'options1',
+                port: 1234
+            }, {});
+        });
+
+        it('enable_offline_queue option forced as true', function (done) {
+            /*jslint unparam: true*/
+            var validateCreate = function (redisClient, port, host, options) {
+                /*jshint camelcase: false*/
+                //jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+                /*eslint-disable camelcase*/
+                assert.isTrue(options.enable_offline_queue);
+                /*eslint-enable camelcase*/
+                //jscs:enable requireCamelCaseOrUpperCaseIdentifiers
+                /*jshint camelcase: true*/
+
+                emitter.removeListener('create', validateCreate);
+                done();
+            };
+            /*jslint unparam: false*/
+
+            emitter.on('create', validateCreate);
+
+            MultipleRedis.createClient({
+                host: 'options1',
+                port: 1234
+            }, {
+                enable_offline_queue: true
+            });
+        });
+
         it('client timeout option negative value', function () {
             var client = MultipleRedis.createClient({
                 host: 'options1',
@@ -372,6 +422,66 @@ describe('MultipleRedis Tests', function () {
     });
 
     describe('command tests', function () {
+        describe('args tests', function () {
+            it('more than 2 args with array', function (done) {
+                var count = 0;
+                var createClient = function () {
+                    return {
+                        on: noop,
+                        send_command: function (name, args, callback) {
+                            count++;
+
+                            assert.equal(name, 'set');
+                            assert.deepEqual(args, [['my key'], 'my value']);
+                            assert.isFunction(callback);
+
+                            callback(null, 'OK');
+                        }
+                    };
+                };
+                var client1 = createClient();
+                var client2 = createClient();
+                var client = MultipleRedis.createClient([client1, client2]);
+
+                client.set(['my key'], 'my value', function (error, response) {
+                    assert.isNull(error);
+                    assert.equal(response, 'OK');
+                    assert.equal(count, 2);
+
+                    done();
+                });
+            });
+
+            it('args as array', function (done) {
+                var count = 0;
+                var createClient = function () {
+                    return {
+                        on: noop,
+                        send_command: function (name, args, callback) {
+                            count++;
+
+                            assert.equal(name, 'set');
+                            assert.deepEqual(args, ['my key', 'my value']);
+                            assert.isFunction(callback);
+
+                            callback(null, 'OK');
+                        }
+                    };
+                };
+                var client1 = createClient();
+                var client2 = createClient();
+                var client = MultipleRedis.createClient([client1, client2]);
+
+                client.set(['my key', 'my value'], function (error, response) {
+                    assert.isNull(error);
+                    assert.equal(response, 'OK');
+                    assert.equal(count, 2);
+
+                    done();
+                });
+            });
+        });
+
         describe('set tests', function () {
             it('set valid', function (done) {
                 var count = 0;
