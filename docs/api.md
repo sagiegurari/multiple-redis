@@ -1,4 +1,5 @@
 <a name="MultiRedisClient"></a>
+
 ## MultiRedisClient ⇐ <code>EventEmitter</code>
 **Kind**: global class  
 **Extends:** <code>EventEmitter</code>  
@@ -14,6 +15,7 @@
         * [.createClient(connectionInfo, [options])](#MultiRedisClient.createClient) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
 
 <a name="new_MultiRedisClient_new"></a>
+
 ### new MultiRedisClient(params)
 Proxies requests to one or more redis clients.
 
@@ -30,16 +32,19 @@ Proxies requests to one or more redis clients.
 | [params.options.mergeDuplicateEndpoints] | <code>boolean</code> | <code>true</code> | True to merge duplicate endpoint configurations and prevent needless redis client connections |
 
 <a name="MultiRedisClient.connected"></a>
+
 ### MultiRedisClient.connected : <code>boolean</code>
 True when at least one internal redis client is connected.
 
 **Access:** public  
 <a name="MultiRedisClient.server_info"></a>
+
 ### MultiRedisClient.server_info : <code>object</code>
 After the ready probe completes, the results from the INFO command are saved in this attribute.
 
 **Access:** public  
 <a name="MultiRedisClient.createClient"></a>
+
 ### MultiRedisClient.createClient(clients, [options]) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
 Creates and returns a new MultiRedisClient instance.
 
@@ -70,6 +75,7 @@ multiClient.once('ready', function onReady() {
 });
 ```
 <a name="MultiRedisClient.createClient"></a>
+
 ### MultiRedisClient.createClient(connectionInfo, [options]) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
 **Kind**: static method of <code>[MultiRedisClient](#MultiRedisClient)</code>  
 **Returns**: <code>[MultiRedisClient](#MultiRedisClient)</code> - The multiple redis client instance  
