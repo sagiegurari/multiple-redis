@@ -22,11 +22,11 @@
 <a name="overview"></a>
 ## Overview
 This library enables to submit redis commands to multiple redis instances.<br>
-The client interface is the same as the 'redis' node package at: https://github.com/NodeRedis/node_redis<br>
+The client interface is the same as the 'redis' node package at: [node redis](https://github.com/NodeRedis/node_redis)<br>
 However, every command actually invokes multiple redis backends.
 
 <a name="why"></a>
-### Why?
+### Why
 Generally in production you would like a failover capability for your redis server.<br>
 Working with only 1 redis instance can cause your entire production system to fail in case redis goes down for any reason.<br>
 For example, when using redis as an express session store and redis is down, users HTTP requests will be rejected.<br>
@@ -50,19 +50,9 @@ independent Redis servers serves as a better solution which is much more simple 
 <a name="howlibworks"></a>
 ### How This Library Works
 This library basically does 2 main things.
-* Get commands - When a get (which does not modify data) command is called, the redis client will go redis by redis in a sequence until
-it finds a redis which provides data for the get command.<br>
-Any error, or any redis which is unable to provide the data is ignored.<br>
-Once a specific redis provides the data, the next redis servers are skipped and the command callback is invoked with that data.
-* Set/Other commands - When a non 'get' command is called, all redis servers are invoked in parallel with the same command to
-ensure that all redis servers are updated with latest data.<br>
-If at least redis server was able to process the command, the original command callback will receive a valid response.<br>
-This means that at least once redis server needs to work good for the main client to notify the calling code that everything works ok.<br>
-To ensure you don't get outdated data, the redis servers should work without persistence to disk.<br>
-So when a redis server goes back up, it is empty. But you still get the data from the other redis that was up and holds that data.<br>
-When that key gets updated with new data, both redis servers are now holding the latest version.<br>
-A side affect of this solution is that every publish event would be received multiple times by the subscribers,
-so you need to code accordingly and prevent any possible issues from handling duplicate published messages.
+
+* Get commands - When a get (which does not modify data) command is called, the redis client will go redis by redis in a sequence until it finds a redis which provides data for the get command.<br>Any error, or any redis which is unable to provide the data is ignored.<br>Once a specific redis provides the data, the next redis servers are skipped and the command callback is invoked with that data.
+* Set/Other commands - When a non 'get' command is called, all redis servers are invoked in parallel with the same command to ensure that all redis servers are updated with latest data.<br>If at least redis server was able to process the command, the original command callback will receive a valid response.<br>This means that at least once redis server needs to work good for the main client to notify the calling code that everything works ok.<br>To ensure you don't get outdated data, the redis servers should work without persistence to disk.<br>So when a redis server goes back up, it is empty. But you still get the data from the other redis that was up and holds that data.<br>When that key gets updated with new data, both redis servers are now holding the latest version.<br>A side affect of this solution is that every publish event would be received multiple times by the subscribers, so you need to code accordingly and prevent any possible issues from handling duplicate published messages.
 
 <a name="scenario"></a>
 ### Simple Scenario
@@ -115,14 +105,17 @@ multiClient.once('ready', function onReady() {
   multiClient.set('string key', 'string val', callback);
 });
 ```
-The rest of the API is the same as defined in the redis node library: https://github.com/NodeRedis/node_redis#api
+
+The rest of the API is the same as defined in the redis node library: [node redis](https://github.com/NodeRedis/node_redis#api)
 <br>
 <a name="debug"></a>
 ## Debug
 In order to turn on debug messages, use the standard nodejs NODE_DEBUG environment variable.
-````
+
+````ini
 NODE_DEBUG=multiple-redis
 ````
+
 <a name="installation"></a>
 ## Installation
 In order to use this library, just run the following npm install command:
@@ -147,7 +140,7 @@ See [contributing guide](.github/CONTRIBUTING.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2016-05-27  | v0.0.60 | Maintenance |
+| 2016-05-28  | v0.0.61 | Maintenance |
 | 2015-10-22  | v0.0.16 | Timeout child commands (see childCommandTimeout option) |
 | 2015-10-16  | v0.0.12 | Maintenance |
 | 2015-09-23  | v0.0.7  | Upgrade to redis 2.0 |
