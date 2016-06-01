@@ -16,13 +16,11 @@ var noop = function noop() {
 
 var emitter = new EventEmitter();
 var baseCreate = redis.createClient;
-var mockRedis = function mockRedis() {
-    return (process.env.MULTIPLE_REDIS_TEST_USE_REDIS !== 'true');
-};
+var mockRedis = (process.env.MULTIPLE_REDIS_TEST_USE_REDIS !== 'true');
 
 redis.createClient = function (port, host, options) {
     var redisClient;
-    if ((!mockRedis()) && (host === 'localhost') && (port === 6379) && options && (!options.mock)) {
+    if ((!mockRedis) && (host === 'localhost') && (port === 6379) && options && (!options.mock)) {
         redisClient = baseCreate.call(redis, port, host, options);
     } else {
         redisClient = new EventEmitter();
@@ -869,7 +867,7 @@ describe('MultipleRedis Tests', function () {
             it('valid', function (done) {
                 this.timeout(10000);
 
-                if (mockRedis()) {
+                if (mockRedis) {
                     /*jslint unparam: true*/
                     var modifyClient = function (redisClient, port, host, options) {
                         if ((host === 'localhost') && (port === 6379) && options && (!options.mock)) {
