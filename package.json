@@ -1,6 +1,6 @@
 {
   "name": "multiple-redis",
-  "version": "0.0.67",
+  "version": "0.0.68",
   "description": "Run redis commands against multiple redis instances.",
   "author": {
     "name": "Sagie Gur-Ari",
@@ -45,6 +45,7 @@
     "event-emitter-enhancer": "latest",
     "grunt": "latest",
     "grunt-cli": "latest",
+    "grunt-concurrent": "latest",
     "grunt-contrib-clean": "latest",
     "grunt-contrib-jshint": "latest",
     "grunt-coveralls": "latest",
@@ -57,8 +58,8 @@
     "grunt-mocha-istanbul": "latest",
     "husky": "latest",
     "istanbul": "latest",
+    "jit-grunt": "latest",
     "load-grunt-configs": "latest",
-    "load-grunt-tasks": "latest",
     "mocha": "latest",
     "time-grunt": "latest"
   }
