@@ -10,8 +10,6 @@ node_js:
 before_install:
   - npm install -g npm
 env:
-  - MULTIPLE_REDIS_TEST_USE_REDIS=true
-  - MULTIPLE_REDIS_TEST_INTEGRATION_HOST1=localhost
-  - MULTIPLE_REDIS_TEST_INTEGRATION_HOST2=otherhost
+  - MULTIPLE_REDIS_TEST_USE_REDIS=true MULTIPLE_REDIS_TEST_INTEGRATION_HOST1=localhost MULTIPLE_REDIS_TEST_INTEGRATION_HOST2=otherhost
 services:
   - redis-server
