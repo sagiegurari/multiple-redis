@@ -1,8 +1,8 @@
-# multiple-redis
+# {"gitdown": "gitinfo", "name": "name"}
 
-[![NPM Version](http://img.shields.io/npm/v/multiple-redis.svg?style=flat)](https://www.npmjs.org/package/multiple-redis) [![Build Status](https://travis-ci.org/sagiegurari/multiple-redis.svg)](http://travis-ci.org/sagiegurari/multiple-redis) [![Coverage Status](https://coveralls.io/repos/sagiegurari/multiple-redis/badge.svg)](https://coveralls.io/r/sagiegurari/multiple-redis) [![Code Climate](https://codeclimate.com/github/sagiegurari/multiple-redis/badges/gpa.svg)](https://codeclimate.com/github/sagiegurari/multiple-redis) [![bitHound Code](https://www.bithound.io/github/sagiegurari/multiple-redis/badges/code.svg)](https://www.bithound.io/github/sagiegurari/multiple-redis) [![Inline docs](http://inch-ci.org/github/sagiegurari/multiple-redis.svg?branch=master)](http://inch-ci.org/github/sagiegurari/multiple-redis)<br>
-[![License](https://img.shields.io/npm/l/multiple-redis.svg?style=flat)](https://github.com/sagiegurari/multiple-redis/blob/master/LICENSE) [![Total Downloads](https://img.shields.io/npm/dt/multiple-redis.svg?style=flat)](https://www.npmjs.org/package/multiple-redis) [![Dependency Status](https://david-dm.org/sagiegurari/multiple-redis.svg)](https://david-dm.org/sagiegurari/multiple-redis) [![devDependency Status](https://david-dm.org/sagiegurari/multiple-redis/dev-status.svg)](https://david-dm.org/sagiegurari/multiple-redis#info=devDependencies)<br>
-[![Retire Status](http://retire.insecurity.today/api/image?uri=https://raw.githubusercontent.com/sagiegurari/multiple-redis/master/package.json)](http://retire.insecurity.today/api/image?uri=https://raw.githubusercontent.com/sagiegurari/multiple-redis/master/package.json)
+[![NPM Version](http://img.shields.io/npm/v/{"gitdown": "gitinfo", "name": "name"}.svg?style=flat)](https://www.npmjs.org/package/{"gitdown": "gitinfo", "name": "name"}) [![Build Status](https://travis-ci.org/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"}.svg)](http://travis-ci.org/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"}) [![Coverage Status](https://coveralls.io/repos/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"}/badge.svg)](https://coveralls.io/r/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"}) [![Code Climate](https://codeclimate.com/github/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"}/badges/gpa.svg)](https://codeclimate.com/github/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"}) [![bitHound Code](https://www.bithound.io/github/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"}/badges/code.svg)](https://www.bithound.io/github/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"}) [![Inline docs](http://inch-ci.org/github/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"}.svg?branch=master)](http://inch-ci.org/github/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"})<br>
+[![License](https://img.shields.io/npm/l/{"gitdown": "gitinfo", "name": "name"}.svg?style=flat)](https://github.com/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"}/blob/master/LICENSE) [![Total Downloads](https://img.shields.io/npm/dt/{"gitdown": "gitinfo", "name": "name"}.svg?style=flat)](https://www.npmjs.org/package/{"gitdown": "gitinfo", "name": "name"}) [![Dependency Status](https://david-dm.org/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"}.svg)](https://david-dm.org/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"}) [![devDependency Status](https://david-dm.org/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"}/dev-status.svg)](https://david-dm.org/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"}#info=devDependencies)<br>
+[![Retire Status](http://retire.insecurity.today/api/image?uri=https://raw.githubusercontent.com/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"}/master/package.json)](http://retire.insecurity.today/api/image?uri=https://raw.githubusercontent.com/{"gitdown": "gitinfo", "name": "username"}/{"gitdown": "gitinfo", "name": "name"}/master/package.json)
 
 > Run redis commands against multiple redis instances.
 
@@ -113,7 +113,7 @@ The rest of the API is the same as defined in the redis node library: [node redi
 In order to turn on debug messages, use the standard nodejs NODE_DEBUG environment variable.
 
 ````ini
-NODE_DEBUG=multiple-redis
+NODE_DEBUG={"gitdown": "gitinfo", "name": "name"}
 ````
 
 <a name="installation"></a>
@@ -121,7 +121,7 @@ NODE_DEBUG=multiple-redis
 In order to use this library, just run the following npm install command:
 
 ```sh
-npm install --save multiple-redis
+npm install --save {"gitdown": "gitinfo", "name": "name"}
 ```
 
 <a name="limitations"></a>
@@ -129,25 +129,4 @@ npm install --save multiple-redis
 Not all of the original redis client attributes are available (for example: redis.debug_mode).<br>
 Also Multi is currently not supported.
 
-## API Documentation
-See full docs at: [API Docs](docs/api.md)
-
-## Contributing
-See [contributing guide](.github/CONTRIBUTING.md)
-
-<a name="history"></a>
-## Release History
-
-| Date        | Version | Description |
-| ----------- | ------- | ----------- |
-| 2016-06-28  | v0.0.72 | Maintenance |
-| 2015-10-22  | v0.0.16 | Timeout child commands (see childCommandTimeout option) |
-| 2015-10-16  | v0.0.12 | Maintenance |
-| 2015-09-23  | v0.0.7  | Upgrade to redis 2.0 |
-| 2015-09-08  | v0.0.6  | Maintenance |
-| 2015-09-03  | v0.0.3  | Added support for connected and server_info attributes. |
-| 2015-09-03  | v0.0.2  | Initial release. |
-
-<a name="license"></a>
-## License
-Developed by Sagie Gur-Ari and licensed under the Apache 2 open source license.
+{"gitdown": "include", "file": "./README-footer-template.md"}
