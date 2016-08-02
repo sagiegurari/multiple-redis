@@ -1,6 +1,6 @@
 {
   "name": "multiple-redis",
-  "version": "0.0.83",
+  "version": "0.0.84",
   "description": "Run redis commands against multiple redis instances.",
   "author": {
     "name": "Sagie Gur-Ari",
