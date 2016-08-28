@@ -1,6 +1,6 @@
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2016-08-05  | v0.0.86 | Maintenance |
+| 2016-08-28  | v1.0.0  | Maintenance |
 | 2015-10-22  | v0.0.16 | Timeout child commands (see childCommandTimeout option) |
 | 2015-10-16  | v0.0.12 | Maintenance |
 | 2015-09-23  | v0.0.7  | Upgrade to redis 2.0 |
