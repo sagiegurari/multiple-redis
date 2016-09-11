@@ -1,6 +1,6 @@
 {
   "name": "multiple-redis",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Run redis commands against multiple redis instances.",
   "author": {
     "name": "Sagie Gur-Ari",
@@ -63,9 +63,7 @@
     "grunt-mocha-istanbul": "latest",
     "husky": "latest",
     "istanbul": "latest",
-    "jit-grunt": "latest",
     "js-project-commons": "latest",
-    "mocha": "latest",
-    "time-grunt": "latest"
+    "mocha": "latest"
   }
 }
