@@ -1,6 +1,6 @@
 'use strict';
-/*global describe: false, it: false */
-//jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+
+/*global describe: false, it: false*/
 
 var chai = require('chai');
 var assert = chai.assert;
@@ -33,13 +33,16 @@ describe('Integration Tests', function () {
         it('redis does not exist test', function (done) {
             this.timeout(5000);
 
-            var redis = MultipleRedis.createClient([{
-                host: redis1Host,
-                port: redis1Port
-            }, {
-                host: redis2Host,
-                port: redis2Port
-            }], options);
+            var redis = MultipleRedis.createClient([
+                {
+                    host: redis1Host,
+                    port: redis1Port
+                },
+                {
+                    host: redis2Host,
+                    port: redis2Port
+                }
+            ], options);
 
             redis.on('connect', function () {
                 setTimeout(function () {

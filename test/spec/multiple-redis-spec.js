@@ -1,6 +1,6 @@
 'use strict';
-/*global describe: false, it: false */
-//jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+
+/*global describe: false, it: false*/
 
 var chai = require('chai');
 var assert = chai.assert;
@@ -55,10 +55,12 @@ describe('MultipleRedis Tests', function () {
 
         it('too many arguments', function () {
             try {
-                MultipleRedis.createClient([{
-                    host: 'localhost1',
-                    port: 1234
-                }], {}, {});
+                MultipleRedis.createClient([
+                    {
+                        host: 'localhost1',
+                        port: 1234
+                    }
+                ], {}, {});
                 assert.fail();
             } catch (error) {
                 assert.isDefined(error);
@@ -66,11 +68,14 @@ describe('MultipleRedis Tests', function () {
         });
 
         it('redis clients', function () {
-            var client = MultipleRedis.createClient([{
-                on: noop
-            }, {
-                on: noop
-            }]);
+            var client = MultipleRedis.createClient([
+                {
+                    on: noop
+                },
+                {
+                    on: noop
+                }
+            ]);
 
             assert.equal(client.clients.length, 2);
         });
@@ -84,49 +89,62 @@ describe('MultipleRedis Tests', function () {
         });
 
         it('connection info array', function () {
-            var client = MultipleRedis.createClient([{
-                host: 'localhost1',
-                port: 1234
-            }, {
-                host: 'localhost2',
-                port: 1234
-            }]);
+            var client = MultipleRedis.createClient([
+                {
+                    host: 'localhost1',
+                    port: 1234
+                },
+                {
+                    host: 'localhost2',
+                    port: 1234
+                }
+            ]);
 
             assert.equal(client.clients.length, 2);
         });
 
         it('connection info array with duplicates', function () {
-            var client = MultipleRedis.createClient([{
-                host: 'localhost1',
-                port: 1234
-            }, {
-                host: 'localhost2',
-                port: 1234
-            }, {
-                host: 'localhost2',
-                port: 1234
-            }, {
-                host: 'localhost1',
-                port: 1234
-            }]);
+            var client = MultipleRedis.createClient([
+                {
+                    host: 'localhost1',
+                    port: 1234
+                },
+                {
+                    host: 'localhost2',
+                    port: 1234
+                },
+                {
+                    host: 'localhost2',
+                    port: 1234
+                },
+                {
+                    host: 'localhost1',
+                    port: 1234
+                }
+            ]);
 
             assert.equal(client.clients.length, 2);
         });
 
         it('connection info array with duplicates no merge', function () {
-            var client = MultipleRedis.createClient([{
-                host: 'localhost1',
-                port: 1234
-            }, {
-                host: 'localhost2',
-                port: 1234
-            }, {
-                host: 'localhost2',
-                port: 1234
-            }, {
-                host: 'localhost1',
-                port: 1234
-            }], {
+            var client = MultipleRedis.createClient([
+                {
+                    host: 'localhost1',
+                    port: 1234
+                },
+                {
+                    host: 'localhost2',
+                    port: 1234
+                },
+                {
+                    host: 'localhost2',
+                    port: 1234
+                },
+                {
+                    host: 'localhost1',
+                    port: 1234
+                }
+            ], {
                 mergeDuplicateEndpoints: false
             });
 
@@ -166,13 +184,16 @@ describe('MultipleRedis Tests', function () {
 
             emitter.on('create', validateCreate);
 
-            MultipleRedis.createClient([{
-                host: 'options1',
-                port: 1234
-            }, {
-                host: 'options12',
-                port: 1234
-            }], {
+            MultipleRedis.createClient([
+                {
+                    host: 'options1',
+                    port: 1234
+                },
+                {
+                    host: 'options12',
+                    port: 1234
+                }
+            ], {
                 someoption: 123
             });
         });
@@ -899,13 +920,16 @@ describe('MultipleRedis Tests', function () {
                     };
                 }
 
-                var client = MultipleRedis.createClient([{
-                    host: 'localhost',
-                    port: 6379
-                }, {
-                    host: 'localhost',
-                    port: 6379
-                }], {
+                var client = MultipleRedis.createClient([
+                    {
+                        host: 'localhost',
+                        port: 6379
+                    },
+                    {
+                        host: 'localhost',
+                        port: 6379
+                    }
+                ], {
                     mergeDuplicateEndpoints: false,
                     mock: false
                 });
