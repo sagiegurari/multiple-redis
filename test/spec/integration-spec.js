@@ -44,7 +44,7 @@ describe('Integration Tests', function () {
                 }
             ], options);
 
-            redis.on('connect', function () {
+            redis.once('connect', function () {
                 setTimeout(function () {
                     assert.isTrue(redis.connected);
 
