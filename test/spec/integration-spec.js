@@ -76,65 +76,65 @@ describe('Integration Tests', function () {
                 }, 500);
             });
         });
+    }
 
-        if (process.env.MULTIPLE_REDIS_TEST_INTEGRATION_KILL_PORT && (redisPorts.length > 1)) {
-            it('pub/sub - redis killed', function (done) {
-                this.timeout(5000);
+    if (process.env.MULTIPLE_REDIS_TEST_INTEGRATION_KILL_PORT && (redisPorts.length > 1)) {
+        it('pub/sub - redis killed', function (done) {
+            this.timeout(5000);
 
-                var publisher = redis.createClient(redisPorts[0], 'localhost');
+            var publisher = redis.createClient(redisPorts[0], 'localhost');
 
-                var connectionInfo = [];
-                redisPorts.forEach(function (redisPort) {
-                    connectionInfo.push({
-                        host: 'localhost',
-                        port: redisPort
-                    });
-                });
-
-                var redisClient = MultipleRedis.createClient(connectionInfo, options);
-
-                redisClient.once('connect', function () {
-                    setTimeout(function () {
-                        assert.isTrue(redis.connected);
-
-                        redisClient.on('subscribe', function () {
-                            var counter = 0;
-
-                            redisClient.on('message', function (channel, message) {
-                                if (channel === 'test') {
-                                    counter++;
-                                    assert.equals(message, 'message ' + counter);
-
-                                    if (counter === 3) {
-                                        publisher.quit();
-                                        redisClient.quit();
-
-                                        done();
-                                    }
-                                }
-                            });
-
-                            publisher.publish('test', 'message 1');
-
-                            setTimeout(function () {
-                                publisher.publish('test', 'message 2');
-
-                                setTimeout(function () {
-                                    childProcess.execFile(path.join(__dirname, '../helper/kill_redis.sh'), [
-                                        process.env.MULTIPLE_REDIS_TEST_INTEGRATION_KILL_PORT
-                                    ], function (killError) {
-                                        assert.isUndefined(killError);
-
-                                        publisher.publish('test', 'message 3');
-                                    });
-                                }, 250);
-                            }, 100);
-                        });
-
-                        redisClient.subscribe('test');
-                    }, 500);
+            var connectionInfo = [];
+            redisPorts.forEach(function (redisPort) {
+                connectionInfo.push({
+                    host: 'localhost',
+                    port: redisPort
                 });
             });
-        }
+
+            var redisClient = MultipleRedis.createClient(connectionInfo, options);
+
+            redisClient.once('connect', function () {
+                setTimeout(function () {
+                    assert.isTrue(redis.connected);
+
+                    redisClient.on('subscribe', function () {
+                        var counter = 0;
+
+                        redisClient.on('message', function (channel, message) {
+                            if (channel === 'test') {
+                                counter++;
+                                assert.equals(message, 'message ' + counter);
+
+                                if (counter === 3) {
+                                    publisher.quit();
+                                    redisClient.quit();
+
+                                    done();
+                                }
+                            }
+                        });
+
+                        publisher.publish('test', 'message 1');
+
+                        setTimeout(function () {
+                            publisher.publish('test', 'message 2');
+
+                            setTimeout(function () {
+                                childProcess.execFile(path.join(__dirname, '../helper/kill_redis.sh'), [
+                                    process.env.MULTIPLE_REDIS_TEST_INTEGRATION_KILL_PORT
+                                ], function (killError) {
+                                    assert.isUndefined(killError);
+
+                                    publisher.publish('test', 'message 3');
+                                });
+                            }, 250);
+                        }, 100);
+                    });
+
+                    redisClient.subscribe('test');
+                }, 500);
+            });
+        });
     }
 });
