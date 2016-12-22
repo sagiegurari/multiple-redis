@@ -80,7 +80,7 @@ describe('Integration Tests', function () {
 
     if (process.env.MULTIPLE_REDIS_TEST_INTEGRATION_KILL_PORT && (redisPorts.length > 1)) {
         it('pub/sub - redis killed', function (done) {
-            this.timeout(5000);
+            this.timeout(60000);
 
             var publisher = redis.createClient(redisPorts[0], 'localhost');
 
