@@ -99,8 +99,6 @@ describe('Integration Tests', function () {
                     assert.isTrue(redisClient.connected);
 
                     redisClient.once('subscribe', function () {
-                        var counter = 0;
-
                         redisClient.on('message', function (channel, message) {
                             if (channel === 'test') {
                                 assert.isTrue(((message === '1') || (message === '2') || (message === 'end')));
