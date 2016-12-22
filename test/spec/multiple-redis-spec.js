@@ -20,7 +20,7 @@ var mockRedis = (process.env.MULTIPLE_REDIS_TEST_USE_REDIS !== 'true');
 
 redis.createClient = function (port, host, options) {
     var redisClient;
-    if ((!mockRedis) && (host === 'localhost') && (port === 6379) && options && (!options.mock)) {
+    if ((options && options.forceNoMock) || ((!mockRedis) && (host === 'localhost') && (port === 6379) && options && (!options.mock))) {
         redisClient = baseCreate.call(redis, port, host, options);
     } else {
         redisClient = new EventEmitter();
@@ -36,24 +36,34 @@ redis.createClient = function (port, host, options) {
 describe('MultipleRedis Tests', function () {
     describe('create tests', function () {
         it('no input', function () {
+            var errorFound = false;
+
             try {
                 MultipleRedis.createClient();
-                assert.fail();
             } catch (error) {
                 assert.isDefined(error);
+                errorFound = true;
             }
+
+            assert.isTrue(errorFound);
         });
 
         it('empty array', function () {
+            var errorFound = false;
+
             try {
                 MultipleRedis.createClient([]);
-                assert.fail();
             } catch (error) {
                 assert.isDefined(error);
+                errorFound = true;
             }
+
+            assert.isTrue(errorFound);
         });
 
         it('too many arguments', function () {
+            var errorFound = false;
+
             try {
                 MultipleRedis.createClient([
                     {
@@ -61,10 +71,12 @@ describe('MultipleRedis Tests', function () {
                         port: 1234
                     }
                 ], {}, {});
-                assert.fail();
             } catch (error) {
                 assert.isDefined(error);
+                errorFound = true;
             }
+
+            assert.isTrue(errorFound);
         });
 
         it('redis clients', function () {

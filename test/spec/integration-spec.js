@@ -5,6 +5,8 @@
 var chai = require('chai');
 var assert = chai.assert;
 var path = require('path');
+var events = require('events');
+var EventEmitter = events.EventEmitter;
 var childProcess = require('child_process');
 var redis = require('redis');
 var MultipleRedis = require('../../');
@@ -27,7 +29,9 @@ describe('Integration Tests', function () {
     }
 
     var authPass = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_AUTH_PASS;
-    var options = {};
+    var options = {
+        forceNoMock: true
+    };
     if (authPass) {
         options.auth_pass = authPass;
     }
@@ -78,21 +82,29 @@ describe('Integration Tests', function () {
         });
     }
 
-    if ((process.env.MULTIPLE_REDIS_TEST_INTEGRATION_PUB_SUB === 'true') && process.env.MULTIPLE_REDIS_TEST_INTEGRATION_KILL_PORT && (redisPorts.length > 1)) {
+    if (process.env.MULTIPLE_REDIS_TEST_INTEGRATION_CONF && (redisPorts.length > 1)) {
         it('pub/sub - redis killed', function (done) {
             this.timeout(60000);
 
-            var publisher = redis.createClient(redisPorts[0], 'localhost');
+            var publisher = redis.createClient(redisPorts[0], 'localhost', options);
+
+            publisher.on('error', function () {
+                return undefined;
+            });
 
             var connectionInfo = [];
             redisPorts.forEach(function (redisPort) {
                 connectionInfo.push({
                     host: 'localhost',
-                    port: redisPort
+                    port: parseInt(redisPort, 10)
                 });
             });
 
             var redisClient = MultipleRedis.createClient(connectionInfo, options);
+
+            redisClient.on('error', function () {
+                return undefined;
+            });
 
             redisClient.once('connect', function () {
                 setTimeout(function () {
@@ -121,11 +133,34 @@ describe('Integration Tests', function () {
 
                             setTimeout(function () {
                                 childProcess.execFile(path.join(__dirname, '../helper/kill_redis.sh'), [
-                                    process.env.MULTIPLE_REDIS_TEST_INTEGRATION_KILL_PORT
+                                    redisPorts[0]
                                 ], function (killError) {
-                                    assert.isUndefined(killError);
+                                    assert.isNull(killError);
 
-                                    publisher.publish('test', 'end');
+                                    var emitter = new EventEmitter();
+
+                                    var readyCount = 0;
+                                    emitter.on('ready', function () {
+                                        readyCount++;
+
+                                        if (readyCount === 2) {
+                                            emitter.removeAllListeners('ready');
+                                            publisher.publish('test', 'end');
+                                        }
+                                    });
+
+                                    childProcess.execFile(path.join(__dirname, '../helper/start_redis.sh'), [
+                                        redisPorts[0],
+                                        process.env.MULTIPLE_REDIS_TEST_INTEGRATION_CONF
+                                    ]);
+
+                                    publisher.once('connect', function () {
+                                        emitter.emit('ready');
+                                    });
+
+                                    redisClient.once('subscribe', function () {
+                                        emitter.emit('ready');
+                                    });
                                 });
                             }, 250);
                         }, 100);

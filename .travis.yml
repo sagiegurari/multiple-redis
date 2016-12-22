@@ -10,9 +10,10 @@ node_js:
   - "iojs"
 before_install:
   - npm install -g npm
-env: MULTIPLE_REDIS_TEST_USE_REDIS=true MULTIPLE_REDIS_TEST_INTEGRATION_HOST1=localhost MULTIPLE_REDIS_TEST_INTEGRATION_HOST2=otherhost MULTIPLE_REDIS_TEST_INTEGRATION_PORTS=7777,7778,6379 MULTIPLE_REDIS_TEST_INTEGRATION_KILL_PORT=7777 MULTIPLE_REDIS_TEST_INTEGRATION_PUB_SUB=false
+env: MULTIPLE_REDIS_TEST_USE_REDIS=true MULTIPLE_REDIS_TEST_INTEGRATION_HOST1=localhost MULTIPLE_REDIS_TEST_INTEGRATION_HOST2=otherhost MULTIPLE_REDIS_TEST_INTEGRATION_PORTS=7777,7778,6379 MULTIPLE_REDIS_TEST_INTEGRATION_CONF=/etc/redis/redis.conf
 services:
   - redis-server
 before_script:
-  - sudo redis-server /etc/redis/redis.conf --port 7777
-  - sudo redis-server /etc/redis/redis.conf --port 7778
+  - chmod -R 777 ./test/helper/*.sh
+  - sudo ./test/helper/start_redis.sh 7777 /etc/redis/redis.conf
+  - sudo ./test/helper/start_redis.sh 7778 /etc/redis/redis.conf
