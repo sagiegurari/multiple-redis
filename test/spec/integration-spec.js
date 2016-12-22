@@ -54,7 +54,7 @@ describe('Integration Tests', function () {
 
             redisClient.once('connect', function () {
                 setTimeout(function () {
-                    assert.isTrue(redis.connected);
+                    assert.isTrue(redisClient.connected);
 
                     var key = 'TESTKEY:TEST1';
                     redisClient.set(key, 'test value', function onWrite(writeError) {
@@ -96,7 +96,7 @@ describe('Integration Tests', function () {
 
             redisClient.once('connect', function () {
                 setTimeout(function () {
-                    assert.isTrue(redis.connected);
+                    assert.isTrue(redisClient.connected);
 
                     redisClient.on('subscribe', function () {
                         var counter = 0;
