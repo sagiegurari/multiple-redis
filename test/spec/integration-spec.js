@@ -98,15 +98,16 @@ describe('Integration Tests', function () {
                 setTimeout(function () {
                     assert.isTrue(redisClient.connected);
 
-                    redisClient.on('subscribe', function () {
+                    redisClient.once('subscribe', function () {
                         var counter = 0;
 
                         redisClient.on('message', function (channel, message) {
                             if (channel === 'test') {
-                                counter++;
-                                assert.equals(message, 'message ' + counter);
+                                assert.isTrue(((message === '1') || (message === '2') || (message === 'end')));
 
-                                if (counter === 3) {
+                                if (message === 'end') {
+                                    redisClient.removeAllListeners('message');
+
                                     publisher.quit();
                                     redisClient.quit();
 
@@ -115,10 +116,10 @@ describe('Integration Tests', function () {
                             }
                         });
 
-                        publisher.publish('test', 'message 1');
+                        publisher.publish('test', '1');
 
                         setTimeout(function () {
-                            publisher.publish('test', 'message 2');
+                            publisher.publish('test', '2');
 
                             setTimeout(function () {
                                 childProcess.execFile(path.join(__dirname, '../helper/kill_redis.sh'), [
@@ -126,7 +127,7 @@ describe('Integration Tests', function () {
                                 ], function (killError) {
                                     assert.isUndefined(killError);
 
-                                    publisher.publish('test', 'message 3');
+                                    publisher.publish('test', 'end');
                                 });
                             }, 250);
                         }, 100);
