@@ -78,7 +78,7 @@ describe('Integration Tests', function () {
         });
     }
 
-    if (process.env.MULTIPLE_REDIS_TEST_INTEGRATION_KILL_PORT && (redisPorts.length > 1)) {
+    if ((process.env.MULTIPLE_REDIS_TEST_INTEGRATION_PUB_SUB === 'true') && process.env.MULTIPLE_REDIS_TEST_INTEGRATION_KILL_PORT && (redisPorts.length > 1)) {
         it('pub/sub - redis killed', function (done) {
             this.timeout(60000);
 
