@@ -84,7 +84,7 @@ describe('Integration Tests', function () {
 
     if (process.env.MULTIPLE_REDIS_TEST_INTEGRATION_CONF && (redisPorts.length > 1)) {
         it('pub/sub - redis killed', function (done) {
-            this.timeout(60000);
+            this.timeout(90000);
 
             var publisher = redis.createClient(redisPorts[0], 'localhost', options);
 
@@ -145,14 +145,12 @@ describe('Integration Tests', function () {
 
                                         if (readyCount === 2) {
                                             emitter.removeAllListeners('ready');
-                                            publisher.publish('test', 'end');
+
+                                            setTimeout(function () {
+                                                publisher.publish('test', 'end');
+                                            }, 250);
                                         }
                                     });
-
-                                    childProcess.execFile(path.join(__dirname, '../helper/start_redis.sh'), [
-                                        redisPorts[0],
-                                        process.env.MULTIPLE_REDIS_TEST_INTEGRATION_CONF
-                                    ]);
 
                                     publisher.once('connect', function () {
                                         emitter.emit('ready');
@@ -161,6 +159,11 @@ describe('Integration Tests', function () {
                                     redisClient.once('subscribe', function () {
                                         emitter.emit('ready');
                                     });
+
+                                    childProcess.execFile(path.join(__dirname, '../helper/start_redis.sh'), [
+                                        redisPorts[0],
+                                        process.env.MULTIPLE_REDIS_TEST_INTEGRATION_CONF
+                                    ]);
                                 });
                             }, 250);
                         }, 100);
