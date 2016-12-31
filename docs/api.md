@@ -22,14 +22,14 @@ Proxies requests to one or more redis clients.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| params | <code>object</code> |  | The client init params |
+| params | <code>Object</code> |  | The client init params |
 | [params.clients] | <code>Array</code> &#124; <code>redis</code> |  | The redis client/s (if not provided, the connection info must be provided instead) |
-| [params.connectionInfo] | <code>Array</code> &#124; <code>object</code> |  | The redis client/s connection info (if not provided, the redis clients must be provided) |
-| [params.connectionInfo.host] | <code>string</code> |  | The redis host |
-| [params.connectionInfo.port] | <code>number</code> |  | The redis port |
+| [params.connectionInfo] | <code>Array</code> &#124; <code>Object</code> |  | The redis client/s connection info (if not provided, the redis clients must be provided) |
+| [params.connectionInfo.host] | <code>String</code> |  | The redis host |
+| [params.connectionInfo.port] | <code>Number</code> |  | The redis port |
 | [params.options] | <code>Array</code> |  | Used when this client creates the redis clients (see redis module for more details) |
-| [params.options.childCommandTimeout] | <code>number</code> | <code>10000</code> | The per client command timeout |
-| [params.options.mergeDuplicateEndpoints] | <code>boolean</code> | <code>true</code> | True to merge duplicate endpoint configurations and prevent needless redis client connections |
+| [params.options.childCommandTimeout] | <code>Number</code> | <code>10000</code> | The per client command timeout |
+| [params.options.mergeDuplicateEndpoints] | <code>Boolean</code> | <code>true</code> | True to merge duplicate endpoint configurations and prevent needless redis client connections |
 
 <a name="MultiRedisClient.connected"></a>
 
@@ -56,7 +56,7 @@ Creates and returns a new MultiRedisClient instance.
 | --- | --- | --- | --- |
 | clients | <code>Array</code> &#124; <code>redis</code> |  | The redis client/s |
 | [options] | <code>Array</code> |  | Various options |
-| [options.childCommandTimeout] | <code>number</code> | <code>10000</code> | The per client command timeout |
+| [options.childCommandTimeout] | <code>Number</code> | <code>10000</code> | The per client command timeout |
 
 **Example**  
 ```js
@@ -83,12 +83,12 @@ multiClient.once('ready', function onReady() {
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| connectionInfo | <code>Array</code> &#124; <code>object</code> |  | The redis client/s connection info |
-| connectionInfo.host | <code>string</code> |  | The redis host |
-| connectionInfo.port | <code>number</code> |  | The redis port |
+| connectionInfo | <code>Array</code> &#124; <code>Object</code> |  | The redis client/s connection info |
+| connectionInfo.host | <code>String</code> |  | The redis host |
+| connectionInfo.port | <code>Number</code> |  | The redis port |
 | [options] | <code>Array</code> |  | Used when this client creates the redis clients (see redis module for more details) |
-| [options.childCommandTimeout] | <code>number</code> | <code>10000</code> | The per client command timeout |
-| [options.mergeDuplicateEndpoints] | <code>boolean</code> | <code>true</code> | True to merge duplicate endpoint configurations and prevent needless redis client connections |
+| [options.childCommandTimeout] | <code>Number</code> | <code>10000</code> | The per client command timeout |
+| [options.mergeDuplicateEndpoints] | <code>Boolean</code> | <code>true</code> | True to merge duplicate endpoint configurations and prevent needless redis client connections |
 
 **Example**  
 ```js
