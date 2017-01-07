@@ -7,7 +7,6 @@ var assert = chai.assert;
 var redis = require('redis');
 var events = require('events');
 var EventEmitter = events.EventEmitter;
-var EventEmitterEnhancer = require('event-emitter-enhancer');
 var MultipleRedis = require('../../');
 
 var noop = function noop() {
@@ -393,8 +392,6 @@ describe('MultipleRedis Tests', function () {
 
             assert.isFalse(client.connected);
             assert.isNull(client.server_info);
-
-            EventEmitterEnhancer.modifyInstance(client);
 
             var unbind = client.onAsync('connect', function () {
                 assert.isTrue(client.connected);
