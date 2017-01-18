@@ -32,8 +32,8 @@ redis.createClient = function (port, host, options) {
     return redisClient;
 };
 
-describe('MultipleRedis Tests', function () {
-    describe('create tests', function () {
+describe('MultipleRedis', function () {
+    describe('create', function () {
         it('no input', function () {
             var errorFound = false;
 
@@ -325,7 +325,7 @@ describe('MultipleRedis Tests', function () {
         });
     });
 
-    describe('proxy events tests', function () {
+    describe('proxy events', function () {
         it('proxy multiple events', function (done) {
             var client1 = new EventEmitter();
             var client2 = new EventEmitter();
@@ -354,7 +354,7 @@ describe('MultipleRedis Tests', function () {
         });
     });
 
-    describe('connect tests', function () {
+    describe('connect', function () {
         it('connect existing clients', function () {
             var client1 = new EventEmitter();
             client1.connected = false;
@@ -449,8 +449,8 @@ describe('MultipleRedis Tests', function () {
         });
     });
 
-    describe('command tests', function () {
-        describe('args tests', function () {
+    describe('command', function () {
+        describe('args', function () {
             it('more than 2 args with array', function (done) {
                 var count = 0;
                 var createClient = function () {
@@ -510,8 +510,8 @@ describe('MultipleRedis Tests', function () {
             });
         });
 
-        describe('set tests', function () {
-            it('set valid', function (done) {
+        describe('set', function () {
+            it('valid', function (done) {
                 var count = 0;
                 var createClient = function () {
                     return {
@@ -540,7 +540,7 @@ describe('MultipleRedis Tests', function () {
                 });
             });
 
-            it('set valid no callback', function () {
+            it('valid no callback', function () {
                 var count = 0;
                 var createClient = function () {
                     return {
@@ -565,7 +565,7 @@ describe('MultipleRedis Tests', function () {
                 assert.equal(count, 2);
             });
 
-            it('set error', function (done) {
+            it('error', function (done) {
                 var count = 0;
                 var createClient = function () {
                     return {
@@ -594,7 +594,7 @@ describe('MultipleRedis Tests', function () {
                 });
             });
 
-            it('set partial error', function (done) {
+            it('partial error', function (done) {
                 var count = 0;
                 var createClient = function (valid) {
                     return {
@@ -650,7 +650,7 @@ describe('MultipleRedis Tests', function () {
                 });
             });
 
-            it('set partial timeout', function (done) {
+            it('partial timeout', function (done) {
                 var count = 0;
                 var createClient = function (valid) {
                     return {
@@ -683,7 +683,7 @@ describe('MultipleRedis Tests', function () {
                 });
             });
 
-            it('set full timeout', function (done) {
+            it('full timeout', function (done) {
                 var count = 0;
                 var createClient = function () {
                     return {
@@ -713,8 +713,8 @@ describe('MultipleRedis Tests', function () {
             });
         });
 
-        describe('get tests', function () {
-            it('get valid', function (done) {
+        describe('get', function () {
+            it('valid', function (done) {
                 var count = 0;
                 var createClient = function () {
                     return {
@@ -743,7 +743,7 @@ describe('MultipleRedis Tests', function () {
                 });
             });
 
-            it('get valid no callback', function () {
+            it('valid no callback', function () {
                 var count = 0;
                 var createClient = function () {
                     return {
@@ -768,7 +768,7 @@ describe('MultipleRedis Tests', function () {
                 assert.equal(count, 1);
             });
 
-            it('get partial timeout', function (done) {
+            it('partial timeout', function (done) {
                 var count = 0;
                 var createClient = function () {
                     return {
@@ -801,7 +801,7 @@ describe('MultipleRedis Tests', function () {
                 });
             });
 
-            it('get full timeout', function (done) {
+            it('full timeout', function (done) {
                 var count = 0;
                 var createClient = function () {
                     return {
@@ -829,7 +829,7 @@ describe('MultipleRedis Tests', function () {
                 });
             });
 
-            it('get error', function (done) {
+            it('error', function (done) {
                 var count = 0;
                 var createClient = function () {
                     return {
@@ -858,7 +858,7 @@ describe('MultipleRedis Tests', function () {
                 });
             });
 
-            it('get partial error', function (done) {
+            it('partial error', function (done) {
                 var count = 0;
                 var createClient = function (valid) {
                     return {
@@ -893,7 +893,7 @@ describe('MultipleRedis Tests', function () {
             });
         });
 
-        describe('set and get tests', function () {
+        describe('set and get', function () {
             it('valid', function (done) {
                 this.timeout(10000);
 
@@ -961,6 +961,267 @@ describe('MultipleRedis Tests', function () {
                             });
                         }, 50);
                     });
+                });
+            });
+        });
+
+        describe('setnx', function () {
+            it('valid', function (done) {
+                var count = 0;
+                var createClient = function () {
+                    return {
+                        on: noop,
+                        send_command: function (name, args, callback) {
+                            count++;
+
+                            assert.equal(name, 'setnx');
+                            assert.deepEqual(args, ['my key', 'my value']);
+                            assert.isFunction(callback);
+
+                            callback(null, 1);
+                        }
+                    };
+                };
+                var client1 = createClient();
+                var client2 = createClient();
+                var client = MultipleRedis.createClient([client1, client2]);
+
+                client.setnx('my key', 'my value', function (error, response) {
+                    assert.isNull(error);
+                    assert.equal(response, 1);
+                    assert.equal(count, 2);
+
+                    done();
+                });
+            });
+
+            it('first is already set', function (done) {
+                var count = 0;
+                var createClient = function (response) {
+                    return {
+                        on: noop,
+                        send_command: function (name, args, callback) {
+                            count++;
+
+                            assert.equal(name, 'setnx');
+                            assert.deepEqual(args, ['my key', 'my value']);
+                            assert.isFunction(callback);
+
+                            callback(null, response);
+                        }
+                    };
+                };
+                var client1 = createClient(0);
+                var client2 = createClient(1);
+                var client = MultipleRedis.createClient([client1, client2]);
+
+                client.setnx('my key', 'my value', function (error, response) {
+                    assert.isNull(error);
+                    assert.equal(response, 0);
+                    assert.equal(count, 2);
+
+                    done();
+                });
+            });
+
+            it('second is already set', function (done) {
+                var count = 0;
+                var createClient = function (response) {
+                    return {
+                        on: noop,
+                        send_command: function (name, args, callback) {
+                            count++;
+
+                            assert.equal(name, 'setnx');
+                            assert.deepEqual(args, ['my key', 'my value']);
+                            assert.isFunction(callback);
+
+                            callback(null, response);
+                        }
+                    };
+                };
+                var client1 = createClient(1);
+                var client2 = createClient(0);
+                var client = MultipleRedis.createClient([client1, client2]);
+
+                client.setnx('my key', 'my value', function (error, response) {
+                    assert.isNull(error);
+                    assert.equal(response, 1);
+                    assert.equal(count, 2);
+
+                    done();
+                });
+            });
+
+            it('valid no callback', function () {
+                var count = 0;
+                var createClient = function () {
+                    return {
+                        on: noop,
+                        send_command: function (name, args, callback) {
+                            count++;
+
+                            assert.equal(name, 'setnx');
+                            assert.deepEqual(args, ['my key', 'my value']);
+                            assert.isFunction(callback);
+
+                            callback(null, 1);
+                        }
+                    };
+                };
+                var client1 = createClient();
+                var client2 = createClient();
+                var client = MultipleRedis.createClient([client1, client2]);
+
+                client.setnx('my key', 'my value');
+
+                assert.equal(count, 2);
+            });
+
+            it('error', function (done) {
+                var count = 0;
+                var createClient = function () {
+                    return {
+                        on: noop,
+                        send_command: function (name, args, callback) {
+                            count++;
+
+                            assert.equal(name, 'setnx');
+                            assert.deepEqual(args, ['my key', 'my value']);
+                            assert.isFunction(callback);
+
+                            callback(new Error());
+                        }
+                    };
+                };
+                var client1 = createClient();
+                var client2 = createClient();
+                var client = MultipleRedis.createClient([client1, client2]);
+
+                client.setnx('my key', 'my value', function (error, response) {
+                    assert.isDefined(error);
+                    assert.isUndefined(response);
+                    assert.equal(count, 2);
+
+                    done();
+                });
+            });
+
+            it('partial error', function (done) {
+                var count = 0;
+                var createClient = function (valid) {
+                    return {
+                        on: noop,
+                        send_command: function (name, args, callback) {
+                            count++;
+
+                            assert.equal(name, 'setnx');
+                            assert.deepEqual(args, ['my key', 'my value']);
+                            assert.isFunction(callback);
+
+                            if (valid) {
+                                callback(null, 1);
+                            } else {
+                                callback(new Error());
+                            }
+                        }
+                    };
+                };
+                var client1 = createClient(true);
+                var client2 = createClient(false);
+                var client = MultipleRedis.createClient([client1, client2]);
+
+                client.setnx('my key', 'my value', function (error, response) {
+                    assert.isNull(error);
+                    assert.equal(response, 1);
+                    assert.equal(count, 2);
+
+                    done();
+                });
+            });
+
+            it('set throw error', function (done) {
+                var count = 0;
+                var createClient = function () {
+                    return {
+                        on: noop,
+                        send_command: function () {
+                            count++;
+                            throw new Error();
+                        }
+                    };
+                };
+                var client1 = createClient();
+                var client = MultipleRedis.createClient(client1);
+
+                client.set('my key', 'my value', function (error, response) {
+                    assert.isDefined(error);
+                    assert.isUndefined(response);
+                    assert.equal(count, 1);
+
+                    done();
+                });
+            });
+
+            it('partial timeout', function (done) {
+                var count = 0;
+                var createClient = function (valid) {
+                    return {
+                        on: noop,
+                        send_command: function (name, args, callback) {
+                            count++;
+
+                            assert.equal(name, 'setnx');
+                            assert.deepEqual(args, ['my key', 'my value']);
+                            assert.isFunction(callback);
+
+                            if (valid) {
+                                callback(null, 1);
+                            }
+                        }
+                    };
+                };
+                var client1 = createClient(true);
+                var client2 = createClient(false);
+                var client = MultipleRedis.createClient([client1, client2], {
+                    childCommandTimeout: 10
+                });
+
+                client.setnx('my key', 'my value', function (error, response) {
+                    assert.isNull(error);
+                    assert.equal(response, 1);
+                    assert.equal(count, 2);
+
+                    done();
+                });
+            });
+
+            it('full timeout', function (done) {
+                var count = 0;
+                var createClient = function () {
+                    return {
+                        on: noop,
+                        send_command: function (name, args, callback) {
+                            count++;
+
+                            assert.equal(name, 'setnx');
+                            assert.deepEqual(args, ['my key', 'my value']);
+                            assert.isFunction(callback);
+                        }
+                    };
+                };
+                var client1 = createClient();
+                var client2 = createClient();
+                var client = MultipleRedis.createClient([client1, client2], {
+                    childCommandTimeout: 10
+                });
+
+                client.setnx('my key', 'my value', function (error, response) {
+                    assert.isDefined(error);
+                    assert.isUndefined(response);
+                    assert.equal(count, 2);
+
+                    done();
                 });
             });
         });
