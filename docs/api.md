@@ -17,9 +17,9 @@
 
 ## MultiRedisClient ⇐ <code>EventEmitter</code>
 **Kind**: global class  
-**Extends:** <code>EventEmitter</code>  
-**Access:** public  
-**Author:** Sagie Gur-Ari  
+**Extends**: <code>EventEmitter</code>  
+**Access**: public  
+**Author**: Sagie Gur-Ari  
 
 * [MultiRedisClient](#MultiRedisClient) ⇐ <code>EventEmitter</code>
     * [new MultiRedisClient(params)](#new_MultiRedisClient_new)
@@ -49,13 +49,13 @@ Proxies requests to one or more redis clients.
 ### MultiRedisClient.connected : <code>Boolean</code>
 True when at least one internal redis client is connected.
 
-**Access:** public  
+**Access**: public  
 <a name="MultiRedisClient.server_info"></a>
 
 ### MultiRedisClient.server_info : <code>Object</code>
 After the ready probe completes, the results from the INFO command are saved in this attribute.
 
-**Access:** public  
+**Access**: public  
 <a name="MultiRedisClient.createClient"></a>
 
 ### MultiRedisClient.createClient(clients, [options]) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
@@ -63,7 +63,7 @@ Creates and returns a new MultiRedisClient instance.
 
 **Kind**: static method of <code>[MultiRedisClient](#MultiRedisClient)</code>  
 **Returns**: <code>[MultiRedisClient](#MultiRedisClient)</code> - The multiple redis client instance  
-**Access:** public  
+**Access**: public  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -92,7 +92,7 @@ multiClient.once('ready', function onReady() {
 ### MultiRedisClient.createClient(connectionInfo, [options]) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
 **Kind**: static method of <code>[MultiRedisClient](#MultiRedisClient)</code>  
 **Returns**: <code>[MultiRedisClient](#MultiRedisClient)</code> - The multiple redis client instance  
-**Access:** public  
+**Access**: public  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
