@@ -1226,4 +1226,191 @@ describe('MultipleRedis', function () {
             });
         });
     });
+
+    describe('createCommandCallback', function () {
+        it('timeout', function (done) {
+            var client = MultipleRedis.createClient([
+                {
+                    on: noop
+                }
+            ], {
+                childCommandTimeout: 10
+            });
+
+            var globalState = {};
+            var clientState = {};
+
+            var callback = client.createCommandCallback(function () {
+                assert.isDefined(globalState.redisError);
+
+                done();
+            }, globalState, clientState);
+
+            assert.isFunction(callback);
+        });
+
+        it('ignore timeout', function (done) {
+            var client = MultipleRedis.createClient([
+                {
+                    on: noop
+                }
+            ], {
+                childCommandTimeout: 10
+            });
+
+            var globalState = {};
+            var clientState = {
+                ignore: true
+            };
+
+            var callback = client.createCommandCallback(function () {
+                assert.fail();
+            }, globalState, clientState);
+
+            assert.isFunction(callback);
+
+            setTimeout(function () {
+                assert.isUndefined(globalState.redisError);
+
+                done();
+            }, 20);
+        });
+
+        it('wrapper called twice', function () {
+            var client = MultipleRedis.createClient([
+                {
+                    on: noop
+                }
+            ], {
+                childCommandTimeout: 10
+            });
+
+            var globalState = {};
+            var clientState = {};
+
+            var called = false;
+            var callback = client.createCommandCallback(function () {
+                if (called) {
+                    assert.fail();
+                }
+            }, globalState, clientState);
+
+            callback(null, 1);
+
+            callback(null, 2);
+
+            assert.isTrue(clientState.ignore);
+        });
+    });
+
+    describe('invokeCommandOnClient', function () {
+        it('exception thrown', function (done) {
+            var client = MultipleRedis.createClient([
+                {
+                    on: noop,
+                    send_command: function () {
+                        throw new Error('test');
+                    }
+                }
+            ]);
+
+            var globalState = {};
+
+            client.invokeCommandOnClient({
+                client: client.clients[0],
+                getCommand: true,
+                clientState: {},
+                globalState: globalState,
+                callback: function () {
+                    assert.isDefined(globalState.redisError);
+                    assert.strictEqual(globalState.redisError.message, 'test');
+
+                    done();
+                }
+            });
+        });
+
+        it('ignore exception thrown', function (done) {
+            var client = MultipleRedis.createClient([
+                {
+                    on: noop,
+                    send_command: function () {
+                        throw new Error('test');
+                    }
+                }
+            ], {
+                childCommandTimeout: 10
+            });
+
+            var clientState = {
+                ignore: true
+            };
+
+            client.invokeCommandOnClient({
+                client: client.clients[0],
+                getCommand: true,
+                clientState: clientState,
+                globalState: {},
+                callback: function () {
+                    assert.fail();
+                }
+            });
+
+            setTimeout(done, 20);
+        });
+
+        it('ignore output', function (done) {
+            var client = MultipleRedis.createClient([
+                {
+                    on: noop,
+                    send_command: function (name, args, callback) {
+                        callback(null, 1);
+                    }
+                }
+            ], {
+                childCommandTimeout: 10
+            });
+
+            var clientState = {
+                ignore: true
+            };
+
+            client.invokeCommandOnClient({
+                client: client.clients[0],
+                getCommand: true,
+                clientState: clientState,
+                globalState: {},
+                callback: function () {
+                    assert.fail();
+                }
+            });
+
+            setTimeout(done, 20);
+        });
+
+        it('empty output', function (done) {
+            var client = MultipleRedis.createClient([
+                {
+                    on: noop,
+                    send_command: function (name, args, callback) {
+                        callback();
+                    }
+                }
+            ], {
+                childCommandTimeout: 10
+            });
+
+            client.invokeCommandOnClient({
+                client: client.clients[0],
+                getCommand: true,
+                clientState: {},
+                globalState: {},
+                callback: function (error) {
+                    assert.isDefined(error);
+
+                    done();
+                }
+            });
+        });
+    });
 });
