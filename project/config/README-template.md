@@ -28,13 +28,13 @@ However, every command actually invokes multiple redis backends.
 <a name="why"></a>
 ### Why
 Generally in production you would like a failover capability for your redis server.<br>
-Working with only 1 redis instance can cause your entire production system to fail in case redis goes down for any reason.<br>
+Working with only one redis instance can cause your entire production system to fail in case redis goes down for any reason.<br>
 For example, when using redis as an express session store and redis is down, users HTTP requests will be rejected.<br>
 So how can we setup high availability?<br>
-You could setup redis master and redis slave. That would have those 2 redis servers sync data between them and you can read it from both.<br>
+You could setup redis master and redis slave. That would have those two redis servers sync data between them and you can read it from both.<br>
 But what if the master redis goes down? If you didn't setup the slave as writable, you are in a possible problem until the master is up.<br>
 If you did, again there is an issue when master goes back up.<br>
-Not to mention you have to setup a deployment installation process to set 1 redis for master and 1 for slave (well... at least one).
+Not to mention you have to setup a deployment installation process to set one redis for master and one for slave (well... at least one).
 So one solution is to be able to change the master in runtime in such a scenario, so now you have a choice to deploy sentinal.<br>
 But that is even more work on the production team and what if sentinal goes down? Who monitors the monitor?<br>
 So another choice is to let the app code detect that the master is down and let it send the commands to select a new master from the existing slaves.<br>
@@ -45,7 +45,7 @@ What if you had multiple standalone redis servers that didn't know of each other
 Your app ensures they are sync or at least it knows to pick up the data from the correct place.<br>
 If one goes down, no problem. You are running with the redis servers that are still up and they too hold the data you need.<br>
 **Important to explain, this does not mean that I do not support the Redis master/slave + sentinal solution** but sometimes using multiple
-independent Redis servers serves as a better solution which is much more simple to deploy and manage in production.
+independent Redis servers serves as a better solution, which is much more simple to deploy and manage in production.
 
 <a name="howlibworks"></a>
 ### How This Library Works
@@ -57,14 +57,12 @@ This library basically does 2 main things.
 <a name="scenario"></a>
 ### Simple Scenario
 Let us take the express redis session store as an example.<br>
-Since this library provides the same redis interface as the common redis client, you can provide this library to the
-redis session store.<br>
+Since this library provides the same redis interface as the common redis client, you can provide this library to the redis session store.<br>
 When a new session is created, it will be created in all redis servers (in this example, lets assume we have 2).<br>
-In case the first redis server suddenly fails, the session store is still able to fetch and update the session data from the
-second redis server.<br>
+In case the first redis server suddenly fails, the session store is still able to fetch and update the session data from the second redis server.<br>
 When the first redis server comes back up, the session is still available to the session store from the second redis server and
 any session modification (due to some HTTP request) will cause both redis servers to now hold the latest express session data.<br>
-It is by no means, not a perfect solution, but it does has its advantages.<br>
+It is by no means, a perfect solution, but it does has its advantages.<br>
 First and foremost, its simple deployment requirements.
 
 <a name="usage"></a>
