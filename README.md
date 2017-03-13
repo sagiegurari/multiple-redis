@@ -138,7 +138,7 @@ See [contributing guide](.github/CONTRIBUTING.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2017-03-10  | v1.0.36 | Maintenance |
+| 2017-03-13  | v1.0.37 | Maintenance |
 | 2017-01-18  | v1.0.29 | setnx type commands now run in sequence and not in parallel |
 | 2017-01-16  | v1.0.28 | Maintenance |
 | 2015-10-22  | v0.0.16 | Timeout child commands (see childCommandTimeout option) |
