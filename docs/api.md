@@ -38,8 +38,8 @@ Proxies requests to one or more redis clients.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | params | <code>Object</code> |  | The client init params |
-| [params.clients] | <code>Array.&lt;redis&gt;</code> &#124; <code>redis</code> |  | The redis client/s (if not provided, the connection info must be provided instead) |
-| [params.connectionInfo] | <code>[Array.&lt;ConnectionInfo&gt;](#ConnectionInfo)</code> &#124; <code>[ConnectionInfo](#ConnectionInfo)</code> |  | The redis client/s connection info (if not provided, the redis clients must be provided) |
+| [params.clients] | <code>Array.&lt;redis&gt;</code> \| <code>redis</code> |  | The redis client/s (if not provided, the connection info must be provided instead) |
+| [params.connectionInfo] | <code>[Array.&lt;ConnectionInfo&gt;](#ConnectionInfo)</code> \| <code>[ConnectionInfo](#ConnectionInfo)</code> |  | The redis client/s connection info (if not provided, the redis clients must be provided) |
 | [params.options] | <code>Object</code> |  | Used when this client creates the redis clients (see redis module for more details) |
 | [params.options.childCommandTimeout] | <code>Number</code> | <code>10000</code> | The per client command timeout |
 | [params.options.mergeDuplicateEndpoints] | <code>Boolean</code> | <code>true</code> | True to merge duplicate endpoint configurations and prevent needless redis client connections |
@@ -67,7 +67,7 @@ Creates and returns a new MultiRedisClient instance.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| clients | <code>Array.&lt;redis&gt;</code> &#124; <code>redis</code> |  | The redis client/s |
+| clients | <code>Array.&lt;redis&gt;</code> \| <code>redis</code> |  | The redis client/s |
 | [options] | <code>Object</code> |  | Various options |
 | [options.childCommandTimeout] | <code>Number</code> | <code>10000</code> | The per client command timeout |
 
@@ -96,7 +96,7 @@ multiClient.once('ready', function onReady() {
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| connectionInfo | <code>[Array.&lt;ConnectionInfo&gt;](#ConnectionInfo)</code> &#124; <code>[ConnectionInfo](#ConnectionInfo)</code> |  | The redis client/s connection info |
+| connectionInfo | <code>[Array.&lt;ConnectionInfo&gt;](#ConnectionInfo)</code> \| <code>[ConnectionInfo](#ConnectionInfo)</code> |  | The redis client/s connection info |
 | [options] | <code>Object</code> |  | Used when this client creates the redis clients (see redis module for more details) |
 | [options.childCommandTimeout] | <code>Number</code> | <code>10000</code> | The per client command timeout |
 | [options.mergeDuplicateEndpoints] | <code>Boolean</code> | <code>true</code> | True to merge duplicate endpoint configurations and prevent needless redis client connections |
