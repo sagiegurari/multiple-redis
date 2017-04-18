@@ -2,7 +2,7 @@
 
 [![NPM Version](http://img.shields.io/npm/v/multiple-redis.svg?style=flat)](https://www.npmjs.org/package/multiple-redis) [![Build Status](https://travis-ci.org/sagiegurari/multiple-redis.svg)](http://travis-ci.org/sagiegurari/multiple-redis) [![Coverage Status](https://coveralls.io/repos/sagiegurari/multiple-redis/badge.svg)](https://coveralls.io/r/sagiegurari/multiple-redis) [![bitHound Code](https://www.bithound.io/github/sagiegurari/multiple-redis/badges/code.svg)](https://www.bithound.io/github/sagiegurari/multiple-redis) [![Inline docs](http://inch-ci.org/github/sagiegurari/multiple-redis.svg?branch=master)](http://inch-ci.org/github/sagiegurari/multiple-redis)<br>
 [![License](https://img.shields.io/npm/l/multiple-redis.svg?style=flat)](https://github.com/sagiegurari/multiple-redis/blob/master/LICENSE) [![Total Downloads](https://img.shields.io/npm/dt/multiple-redis.svg?style=flat)](https://www.npmjs.org/package/multiple-redis) [![Dependency Status](https://david-dm.org/sagiegurari/multiple-redis.svg)](https://david-dm.org/sagiegurari/multiple-redis) [![devDependency Status](https://david-dm.org/sagiegurari/multiple-redis/dev-status.svg)](https://david-dm.org/sagiegurari/multiple-redis?type=dev)<br>
-[![Retire Status](http://retire.insecurity.today/api/image?uri=https://raw.githubusercontent.com/sagiegurari/multiple-redis/master/package.json)](http://retire.insecurity.today/api/image?uri=https://raw.githubusercontent.com/sagiegurari/multiple-redis/master/package.json)
+[![Known Vulnerabilities](https://snyk.io/test/github/sagiegurari/multiple-redis/badge.svg)](https://snyk.io/test/github/sagiegurari/multiple-redis) [![Retire Status](http://retire.insecurity.today/api/image?uri=https://raw.githubusercontent.com/sagiegurari/multiple-redis/master/package.json)](http://retire.insecurity.today/api/image?uri=https://raw.githubusercontent.com/sagiegurari/multiple-redis/master/package.json)
 
 > Run redis commands against multiple redis instances.
 
@@ -138,7 +138,7 @@ See [contributing guide](.github/CONTRIBUTING.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2017-04-17  | v1.0.42 | Maintenance |
+| 2017-04-18  | v1.0.43 | Maintenance |
 | 2017-01-18  | v1.0.29 | setnx type commands now run in sequence and not in parallel |
 | 2017-01-16  | v1.0.28 | Maintenance |
 | 2015-10-22  | v0.0.16 | Timeout child commands (see childCommandTimeout option) |
