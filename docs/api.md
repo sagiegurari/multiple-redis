@@ -26,8 +26,8 @@
     * [.connected](#MultiRedisClient.connected) : <code>Boolean</code>
     * [.server_info](#MultiRedisClient.server_info) : <code>Object</code>
     * _static_
-        * [.createClient(clients, [options])](#MultiRedisClient.createClient) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
-        * [.createClient(connectionInfo, [options])](#MultiRedisClient.createClient) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
+        * [.createClient(clients, [options])](#MultiRedisClient.createClient) ⇒ [<code>MultiRedisClient</code>](#MultiRedisClient)
+        * [.createClient(connectionInfo, [options])](#MultiRedisClient.createClient) ⇒ [<code>MultiRedisClient</code>](#MultiRedisClient)
 
 <a name="new_MultiRedisClient_new"></a>
 
@@ -39,7 +39,7 @@ Proxies requests to one or more redis clients.
 | --- | --- | --- | --- |
 | params | <code>Object</code> |  | The client init params |
 | [params.clients] | <code>Array.&lt;redis&gt;</code> \| <code>redis</code> |  | The redis client/s (if not provided, the connection info must be provided instead) |
-| [params.connectionInfo] | <code>[Array.&lt;ConnectionInfo&gt;](#ConnectionInfo)</code> \| <code>[ConnectionInfo](#ConnectionInfo)</code> |  | The redis client/s connection info (if not provided, the redis clients must be provided) |
+| [params.connectionInfo] | [<code>Array.&lt;ConnectionInfo&gt;</code>](#ConnectionInfo) \| [<code>ConnectionInfo</code>](#ConnectionInfo) |  | The redis client/s connection info (if not provided, the redis clients must be provided) |
 | [params.options] | <code>Object</code> |  | Used when this client creates the redis clients (see redis module for more details) |
 | [params.options.childCommandTimeout] | <code>Number</code> | <code>10000</code> | The per client command timeout |
 | [params.options.mergeDuplicateEndpoints] | <code>Boolean</code> | <code>true</code> | True to merge duplicate endpoint configurations and prevent needless redis client connections |
@@ -58,11 +58,11 @@ After the ready probe completes, the results from the INFO command are saved in 
 **Access**: public  
 <a name="MultiRedisClient.createClient"></a>
 
-### MultiRedisClient.createClient(clients, [options]) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
+### MultiRedisClient.createClient(clients, [options]) ⇒ [<code>MultiRedisClient</code>](#MultiRedisClient)
 Creates and returns a new MultiRedisClient instance.
 
-**Kind**: static method of <code>[MultiRedisClient](#MultiRedisClient)</code>  
-**Returns**: <code>[MultiRedisClient](#MultiRedisClient)</code> - The multiple redis client instance  
+**Kind**: static method of [<code>MultiRedisClient</code>](#MultiRedisClient)  
+**Returns**: [<code>MultiRedisClient</code>](#MultiRedisClient) - The multiple redis client instance  
 **Access**: public  
 
 | Param | Type | Default | Description |
@@ -89,14 +89,14 @@ multiClient.once('ready', function onReady() {
 ```
 <a name="MultiRedisClient.createClient"></a>
 
-### MultiRedisClient.createClient(connectionInfo, [options]) ⇒ <code>[MultiRedisClient](#MultiRedisClient)</code>
-**Kind**: static method of <code>[MultiRedisClient](#MultiRedisClient)</code>  
-**Returns**: <code>[MultiRedisClient](#MultiRedisClient)</code> - The multiple redis client instance  
+### MultiRedisClient.createClient(connectionInfo, [options]) ⇒ [<code>MultiRedisClient</code>](#MultiRedisClient)
+**Kind**: static method of [<code>MultiRedisClient</code>](#MultiRedisClient)  
+**Returns**: [<code>MultiRedisClient</code>](#MultiRedisClient) - The multiple redis client instance  
 **Access**: public  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| connectionInfo | <code>[Array.&lt;ConnectionInfo&gt;](#ConnectionInfo)</code> \| <code>[ConnectionInfo](#ConnectionInfo)</code> |  | The redis client/s connection info |
+| connectionInfo | [<code>Array.&lt;ConnectionInfo&gt;</code>](#ConnectionInfo) \| [<code>ConnectionInfo</code>](#ConnectionInfo) |  | The redis client/s connection info |
 | [options] | <code>Object</code> |  | Used when this client creates the redis clients (see redis module for more details) |
 | [options.childCommandTimeout] | <code>Number</code> | <code>10000</code> | The per client command timeout |
 | [options.mergeDuplicateEndpoints] | <code>Boolean</code> | <code>true</code> | True to merge duplicate endpoint configurations and prevent needless redis client connections |
