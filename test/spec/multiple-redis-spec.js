@@ -891,6 +891,35 @@ describe('MultipleRedis', function () {
                     done();
                 });
             });
+
+            it('partial error and no output', function (done) {
+                var createClient = function (valid) {
+                    return {
+                        on: noop,
+                        send_command: function (name, args, callback) {
+                            assert.equal(name, 'get');
+                            assert.deepEqual(args, ['my key']);
+                            assert.isFunction(callback);
+
+                            if (valid) {
+                                callback(null, null);
+                            } else {
+                                callback(new Error());
+                            }
+                        }
+                    };
+                };
+                var client1 = createClient(false);
+                var client2 = createClient(true);
+                var client = MultipleRedis.createClient([client1, client2]);
+
+                client.get('my key', function (error, response) {
+                    assert.isNull(error);
+                    assert.isNull(response);
+
+                    done();
+                });
+            });
         });
 
         describe('set and get', function () {
@@ -1411,6 +1440,294 @@ describe('MultipleRedis', function () {
                     done();
                 }
             });
+        });
+    });
+
+    describe('resetState', function () {
+        it('all connected, ready event', function (done) {
+            var client1 = new EventEmitter();
+            var client2 = new EventEmitter();
+
+            var client = MultipleRedis.createClient([
+                client1,
+                client2
+            ]);
+
+            client1.connected = true;
+            client2.connected = true;
+
+            client1.ready = true;
+            client2.ready = true;
+
+            client.once('all-ready', done);
+
+            assert.isFalse(client.connected);
+
+            client.resetState(true);
+
+            assert.isTrue(client.connected);
+            assert.isTrue(client.allConnected);
+        });
+
+        it('all connected but not ready, ready event', function (done) {
+            var client1 = new EventEmitter();
+            var client2 = new EventEmitter();
+
+            var client = MultipleRedis.createClient([
+                client1,
+                client2
+            ]);
+
+            client1.connected = true;
+            client2.connected = true;
+
+            client1.ready = true;
+            client2.ready = false;
+
+            client.once('all-ready', function () {
+                assert.fail();
+            });
+
+            assert.isFalse(client.connected);
+
+            client.resetState(true);
+
+            assert.isTrue(client.connected);
+            assert.isTrue(client.allConnected);
+
+            setTimeout(done, 50);
+        });
+
+        it('all connected, not a ready event', function (done) {
+            var client1 = new EventEmitter();
+            var client2 = new EventEmitter();
+
+            var client = MultipleRedis.createClient([
+                client1,
+                client2
+            ]);
+
+            client1.connected = true;
+            client2.connected = true;
+
+            client1.ready = true;
+            client2.ready = true;
+
+            client.once('all-ready', function () {
+                assert.fail();
+            });
+
+            assert.isFalse(client.connected);
+
+            client.resetState();
+
+            assert.isTrue(client.connected);
+            assert.isTrue(client.allConnected);
+
+            setTimeout(done, 50);
+        });
+
+        it('not all connected, ready event', function (done) {
+            var client1 = new EventEmitter();
+            var client2 = new EventEmitter();
+
+            var client = MultipleRedis.createClient([
+                client1,
+                client2
+            ]);
+
+            client1.connected = true;
+            client2.connected = false;
+
+            client1.ready = true;
+            client2.ready = true;
+
+            client.once('all-ready', function () {
+                assert.fail();
+            });
+
+            assert.isFalse(client.connected);
+
+            client.resetState(true);
+
+            assert.isTrue(client.connected);
+            assert.isFalse(client.allConnected);
+
+            setTimeout(done, 50);
+        });
+
+        it('not all connected, not a ready event', function (done) {
+            var client1 = new EventEmitter();
+            var client2 = new EventEmitter();
+
+            var client = MultipleRedis.createClient([
+                client1,
+                client2
+            ]);
+
+            client1.connected = true;
+            client2.connected = false;
+
+            client1.ready = true;
+            client2.ready = true;
+
+            client.once('all-ready', function () {
+                assert.fail();
+            });
+
+            assert.isFalse(client.connected);
+
+            client.resetState();
+
+            assert.isTrue(client.connected);
+            assert.isFalse(client.allConnected);
+
+            setTimeout(done, 50);
+        });
+    });
+
+    describe('onready', function () {
+        it('all connected, ready event', function (done) {
+            var client1 = new EventEmitter();
+            var client2 = new EventEmitter();
+
+            var client = MultipleRedis.createClient([
+                client1,
+                client2
+            ]);
+
+            client1.connected = true;
+            client2.connected = true;
+
+            client1.ready = true;
+            client2.ready = true;
+
+            client.once('all-ready', done);
+
+            assert.isFalse(client.connected);
+
+            client1.emit('ready');
+
+            assert.isTrue(client.connected);
+            assert.isTrue(client.allConnected);
+        });
+
+        it('all connected but not ready, ready event', function (done) {
+            var client1 = new EventEmitter();
+            var client2 = new EventEmitter();
+
+            var client = MultipleRedis.createClient([
+                client1,
+                client2
+            ]);
+
+            client1.connected = true;
+            client2.connected = true;
+
+            client1.ready = true;
+            client2.ready = false;
+
+            client.once('all-ready', function () {
+                assert.fail();
+            });
+
+            assert.isFalse(client.connected);
+
+            client1.emit('ready');
+
+            assert.isTrue(client.connected);
+            assert.isTrue(client.allConnected);
+
+            setTimeout(done, 50);
+        });
+
+        it('not all connected, ready event', function (done) {
+            var client1 = new EventEmitter();
+            var client2 = new EventEmitter();
+
+            var client = MultipleRedis.createClient([
+                client1,
+                client2
+            ]);
+
+            client1.connected = true;
+            client2.connected = false;
+
+            client1.ready = true;
+            client2.ready = true;
+
+            client.once('all-ready', function () {
+                assert.fail();
+            });
+
+            assert.isFalse(client.connected);
+
+            client1.emit('ready');
+
+            assert.isTrue(client.connected);
+            assert.isFalse(client.allConnected);
+
+            setTimeout(done, 50);
+        });
+    });
+
+    describe('onconnect', function () {
+        it('all connected, not a ready event', function (done) {
+            var client1 = new EventEmitter();
+            var client2 = new EventEmitter();
+
+            var client = MultipleRedis.createClient([
+                client1,
+                client2
+            ]);
+
+            client1.connected = true;
+            client2.connected = true;
+
+            client1.ready = true;
+            client2.ready = true;
+
+            client.once('all-ready', function () {
+                assert.fail();
+            });
+
+            assert.isFalse(client.connected);
+
+            client1.emit('connect');
+
+            assert.isTrue(client.connected);
+            assert.isTrue(client.allConnected);
+
+            setTimeout(done, 50);
+        });
+
+        it('not all connected, not a ready event', function (done) {
+            var client1 = new EventEmitter();
+            var client2 = new EventEmitter();
+
+            var client = MultipleRedis.createClient([
+                client1,
+                client2
+            ]);
+
+            client1.connected = true;
+            client2.connected = false;
+
+            client1.ready = true;
+            client2.ready = true;
+
+            client.once('all-ready', function () {
+                assert.fail();
+            });
+
+            assert.isFalse(client.connected);
+
+            client1.emit('connect');
+
+            assert.isTrue(client.connected);
+            assert.isFalse(client.allConnected);
+
+            setTimeout(done, 50);
         });
     });
 });

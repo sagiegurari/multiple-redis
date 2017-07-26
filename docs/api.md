@@ -5,6 +5,14 @@
 <dd></dd>
 </dl>
 
+## Events
+
+<dl>
+<dt><a href="#event_all-ready">"all-ready"</a></dt>
+<dd><p>This events is triggered when all redis clients are ready.</p>
+</dd>
+</dl>
+
 ## Typedefs
 
 <dl>
@@ -18,12 +26,14 @@
 ## MultiRedisClient ⇐ <code>EventEmitter</code>
 **Kind**: global class  
 **Extends**: <code>EventEmitter</code>  
+**Emits**: [<code>all-ready</code>](#event_all-ready)  
 **Access**: public  
 **Author**: Sagie Gur-Ari  
 
 * [MultiRedisClient](#MultiRedisClient) ⇐ <code>EventEmitter</code>
     * [new MultiRedisClient(params)](#new_MultiRedisClient_new)
     * [.connected](#MultiRedisClient.connected) : <code>Boolean</code>
+    * [.allConnected](#MultiRedisClient.allConnected) : <code>Boolean</code>
     * [.server_info](#MultiRedisClient.server_info) : <code>Object</code>
     * _static_
         * [.createClient(clients, [options])](#MultiRedisClient.createClient) ⇒ [<code>MultiRedisClient</code>](#MultiRedisClient)
@@ -48,6 +58,12 @@ Proxies requests to one or more redis clients.
 
 ### MultiRedisClient.connected : <code>Boolean</code>
 True when at least one internal redis client is connected.
+
+**Access**: public  
+<a name="MultiRedisClient.allConnected"></a>
+
+### MultiRedisClient.allConnected : <code>Boolean</code>
+True when all internal redis clients are connected.
 
 **Access**: public  
 <a name="MultiRedisClient.server_info"></a>
@@ -82,7 +98,7 @@ var client2 = redis.createClient(...);
 var MultipleRedis = require('multiple-redis');
 var multiClient = MultipleRedis.createClient([client1, client2]);
 
-multiClient.once('ready', function onReady() {
+multiClient.once('all-ready', function onReady() {
   //run any command on the multi client instead of the original clients
   multiClient.set('string key', 'string val', callback);
 });
@@ -113,11 +129,17 @@ var multiClient = MultipleRedis.createClient([{
   port: 6379
 }], options);
 
-multiClient.once('ready', function onReady() {
+multiClient.once('all-ready', function onReady() {
   //run any command on the multi client instead of the original clients
   multiClient.set('string key', 'string val', callback);
 });
 ```
+<a name="event_all-ready"></a>
+
+## "all-ready"
+This events is triggered when all redis clients are ready.
+
+**Kind**: event emitted  
 <a name="ConnectionInfo"></a>
 
 ## ConnectionInfo : <code>Object</code>

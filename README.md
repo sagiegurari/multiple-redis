@@ -79,7 +79,7 @@ var client2 = redis.createClient(...);
 var MultipleRedis = require('multiple-redis');
 var multiClient = MultipleRedis.createClient([client1, client2]);
 
-multiClient.once('ready', function onReady() {
+multiClient.once('all-ready', function onReady() {
   //run any command on the multi client instead of the original clients
   multiClient.set('string key', 'string val', callback);
 });
@@ -98,7 +98,7 @@ var multiClient = MultipleRedis.createClient([{
    port: 6379
 }], options);
 
-multiClient.once('ready', function onReady() {
+multiClient.once('all-ready', function onReady() {
   //run any command on the multi client instead of the original clients
   multiClient.set('string key', 'string val', callback);
 });
@@ -138,13 +138,10 @@ See [contributing guide](.github/CONTRIBUTING.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2017-06-26  | v1.0.58 | Maintenance |
+| 2017-07-26  | v1.0.59 | Added all-ready event and allConnected attribute |
 | 2017-01-18  | v1.0.29 | setnx type commands now run in sequence and not in parallel |
-| 2017-01-16  | v1.0.28 | Maintenance |
 | 2015-10-22  | v0.0.16 | Timeout child commands (see childCommandTimeout option) |
-| 2015-10-16  | v0.0.12 | Maintenance |
 | 2015-09-23  | v0.0.7  | Upgrade to redis 2.0 |
-| 2015-09-08  | v0.0.6  | Maintenance |
 | 2015-09-03  | v0.0.3  | Added support for connected and server_info attributes. |
 | 2015-09-03  | v0.0.2  | Initial release. |
 
