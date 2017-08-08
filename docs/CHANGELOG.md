@@ -1,5 +1,6 @@
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
+| 2017-08-08  | v1.0.62 | Maintenance |
 | 2017-07-26  | v1.0.61 | Added all-ready event and allConnected attribute |
 | 2017-01-18  | v1.0.29 | setnx type commands now run in sequence and not in parallel |
 | 2015-10-22  | v0.0.16 | Timeout child commands (see childCommandTimeout option) |
