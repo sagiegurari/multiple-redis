@@ -135,6 +135,8 @@ describe('MultipleRedis', function () {
             ]);
 
             assert.equal(client.clients.length, 2);
+
+            client.quit();
         });
 
         it('connection info array with duplicates no merge', function () {
@@ -160,6 +162,8 @@ describe('MultipleRedis', function () {
             });
 
             assert.equal(client.clients.length, 4);
+
+            client.quit();
         });
 
         it('single connection info', function () {
@@ -169,10 +173,13 @@ describe('MultipleRedis', function () {
             });
 
             assert.equal(client.clients.length, 1);
+
+            client.quit();
         });
 
         it('connection info array with options', function (done) {
             var count = 0;
+            var client;
             /*jslint unparam: true*/
             var validateCreate = function (redisClient, port, host, options) {
                 if ((port === 1234) && (host.indexOf('options') === 0)) {
@@ -185,7 +192,11 @@ describe('MultipleRedis', function () {
                     count++;
                     if (count === 2) {
                         emitter.removeListener('create', validateCreate);
-                        done();
+
+                        setTimeout(function () {
+                            client.quit();
+                            done();
+                        }, 0);
                     } else if (count > 2) {
                         assert.fail();
                     }
@@ -195,7 +206,7 @@ describe('MultipleRedis', function () {
 
             emitter.on('create', validateCreate);
 
-            MultipleRedis.createClient([
+            client = MultipleRedis.createClient([
                 {
                     host: 'options1',
                     port: 1234
@@ -210,6 +221,8 @@ describe('MultipleRedis', function () {
         });
 
         it('empty options', function (done) {
+            var client;
+
             /*jslint unparam: true*/
             var validateCreate = function (redisClient, port, host, options) {
                 /*jshint camelcase: false*/
@@ -221,19 +234,25 @@ describe('MultipleRedis', function () {
                 /*jshint camelcase: true*/
 
                 emitter.removeListener('create', validateCreate);
-                done();
+
+                setTimeout(function () {
+                    client.quit();
+                    done();
+                }, 0);
             };
             /*jslint unparam: false*/
 
             emitter.on('create', validateCreate);
 
-            MultipleRedis.createClient({
+            client = MultipleRedis.createClient({
                 host: 'options1',
                 port: 1234
             }, {});
         });
 
         it('enable_offline_queue option forced as true', function (done) {
+            var client;
+
             /*jslint unparam: true*/
             var validateCreate = function (redisClient, port, host, options) {
                 /*jshint camelcase: false*/
@@ -245,13 +264,17 @@ describe('MultipleRedis', function () {
                 /*jshint camelcase: true*/
 
                 emitter.removeListener('create', validateCreate);
-                done();
+
+                setTimeout(function () {
+                    client.quit();
+                    done();
+                }, 0);
             };
             /*jslint unparam: false*/
 
             emitter.on('create', validateCreate);
 
-            MultipleRedis.createClient({
+            client = MultipleRedis.createClient({
                 host: 'options1',
                 port: 1234
             }, {
@@ -268,6 +291,8 @@ describe('MultipleRedis', function () {
             });
 
             assert.equal(client.childCommandTimeout, 10000);
+
+            client.quit();
         });
 
         it('client timeout option samller than 10 seconds', function () {
@@ -279,6 +304,8 @@ describe('MultipleRedis', function () {
             });
 
             assert.equal(client.childCommandTimeout, 6);
+
+            client.quit();
         });
 
         it('client timeout option bigger than 10 seconds', function () {
@@ -290,10 +317,14 @@ describe('MultipleRedis', function () {
             });
 
             assert.equal(client.childCommandTimeout, 20000);
+
+            client.quit();
         });
 
         it('single connection info', function (done) {
             var count = 0;
+            var client;
+
             /*jslint unparam: true*/
             var validateCreate = function (redisClient, port, host, options) {
                 if ((port === 1234) && (host === 'singleOption')) {
@@ -306,7 +337,11 @@ describe('MultipleRedis', function () {
                     count++;
                     if (count === 1) {
                         emitter.removeListener('create', validateCreate);
-                        done();
+
+                        setTimeout(function () {
+                            client.quit();
+                            done();
+                        }, 0);
                     } else if (count > 1) {
                         assert.fail();
                     }
@@ -316,7 +351,7 @@ describe('MultipleRedis', function () {
 
             emitter.on('create', validateCreate);
 
-            MultipleRedis.createClient({
+            client = MultipleRedis.createClient({
                 host: 'singleOption',
                 port: 1234
             }, {
@@ -342,6 +377,7 @@ describe('MultipleRedis', function () {
                         key: 'value'
                     });
 
+                    client.quit();
                     done();
                 });
 
