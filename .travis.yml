@@ -2,14 +2,12 @@ language: node_js
 sudo: true
 node_js:
   - "node"
+  - "10"
   - "8"
   - "6"
-  - "4"
 matrix:
   allow_failures:
     - node_js: node
-before_install:
-  - npm install -g npm@latest
 env:
   global:
     - MULTIPLE_REDIS_TEST_USE_REDIS=true
