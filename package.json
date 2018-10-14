@@ -1,6 +1,6 @@
 {
   "name": "multiple-redis",
-  "version": "1.0.72",
+  "version": "1.0.73",
   "description": "Run redis commands against multiple redis instances.",
   "author": {
     "name": "Sagie Gur-Ari",
@@ -43,7 +43,7 @@
     "debuglog": "^1.0.1",
     "event-emitter-enhancer": "latest",
     "redis": "^2.8.0",
-    "redis-commands": "^1.3.5"
+    "redis-commands": "^1.4.0"
   },
   "devDependencies": {
     "chai": "latest",
