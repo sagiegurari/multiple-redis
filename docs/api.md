@@ -68,7 +68,7 @@ True when all internal redis clients are connected.
 **Access**: public  
 <a name="MultiRedisClient.server_info"></a>
 
-### MultiRedisClient.server_info : <code>Object</code>
+### MultiRedisClient.server\_info : <code>Object</code>
 After the ready probe completes, the results from the INFO command are saved in this attribute.
 
 **Access**: public  
