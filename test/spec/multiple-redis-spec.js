@@ -836,6 +836,8 @@ describe('MultipleRedis', function () {
                 var client2 = createClient();
                 var client = MultipleRedis.createClient([client1, client2]);
 
+                assert.isFalse(client.forceParallel);
+
                 client.get('my key', function (error, response) {
                     assert.isNull(error);
                     assert.equal(response, 'my value');
@@ -870,6 +872,8 @@ describe('MultipleRedis', function () {
                 var client = MultipleRedis.createClient([client1, client2], {
                     forceParallel: true
                 });
+
+                assert.isTrue(client.forceParallel);
 
                 client.get('my key', function (error, response) {
                     assert.isNull(error);
