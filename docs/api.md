@@ -53,6 +53,7 @@ Proxies requests to one or more redis clients.
 | [params.options] | <code>Object</code> |  | Used when this client creates the redis clients (see redis module for more details) |
 | [params.options.childCommandTimeout] | <code>Number</code> | <code>10000</code> | The per client command timeout |
 | [params.options.mergeDuplicateEndpoints] | <code>Boolean</code> | <code>true</code> | True to merge duplicate endpoint configurations and prevent needless redis client connections |
+| [params.options.forceParallel] | <code>Boolean</code> | <code>false</code> | Force parallel, even for get commands |
 
 <a name="MultiRedisClient.connected"></a>
 
@@ -86,6 +87,7 @@ Creates and returns a new MultiRedisClient instance.
 | clients | <code>Array.&lt;redis&gt;</code> \| <code>redis</code> |  | The redis client/s |
 | [options] | <code>Object</code> |  | Various options |
 | [options.childCommandTimeout] | <code>Number</code> | <code>10000</code> | The per client command timeout |
+| [options.forceParallel] | <code>Boolean</code> | <code>false</code> | Force parallel, even for get commands |
 
 **Example**  
 ```js
@@ -116,6 +118,7 @@ multiClient.once('all-ready', function onReady() {
 | [options] | <code>Object</code> |  | Used when this client creates the redis clients (see redis module for more details) |
 | [options.childCommandTimeout] | <code>Number</code> | <code>10000</code> | The per client command timeout |
 | [options.mergeDuplicateEndpoints] | <code>Boolean</code> | <code>true</code> | True to merge duplicate endpoint configurations and prevent needless redis client connections |
+| [options.forceParallel] | <code>Boolean</code> | <code>false</code> | Force parallel, even for get commands |
 
 **Example**  
 ```js

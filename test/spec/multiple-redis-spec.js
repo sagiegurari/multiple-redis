@@ -845,6 +845,41 @@ describe('MultipleRedis', function () {
                 });
             });
 
+            it('second only has data force parallel', function (done) {
+                var count = 0;
+                var createClient = function () {
+                    return {
+                        on: noop,
+                        send_command: function (name, args, callback) {
+                            count++;
+
+                            assert.equal(name, 'get');
+                            assert.deepEqual(args, ['my key']);
+                            assert.isFunction(callback);
+
+                            if (count === 2) {
+                                callback(null, 'my value');
+                            } else {
+                                callback(null, null);
+                            }
+                        }
+                    };
+                };
+                var client1 = createClient();
+                var client2 = createClient();
+                var client = MultipleRedis.createClient([client1, client2], {
+                    forceParallel: true
+                });
+
+                client.get('my key', function (error, response) {
+                    assert.isNull(error);
+                    assert.equal(response, 'my value');
+                    assert.equal(count, 2);
+
+                    done();
+                });
+            });
+
             it('valid no callback', function () {
                 var count = 0;
                 var createClient = function () {
