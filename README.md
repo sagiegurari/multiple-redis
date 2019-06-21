@@ -137,7 +137,7 @@ See [contributing guide](.github/CONTRIBUTING.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2019-06-21  | v1.2.0  | Maintenance |
+| 2019-06-21  | v1.2.0  | Added 'forceParallel' option to issue GET in parallel #5 |
 | 2017-07-26  | v1.0.61 | Added all-ready event and allConnected attribute |
 | 2017-01-18  | v1.0.29 | setnx type commands now run in sequence and not in parallel |
 | 2015-10-22  | v0.0.16 | Timeout child commands (see childCommandTimeout option) |
