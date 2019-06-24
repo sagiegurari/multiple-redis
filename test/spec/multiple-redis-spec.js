@@ -847,7 +847,7 @@ describe('MultipleRedis', function () {
                 });
             });
 
-            it('second only has data force parallel', function (done) {
+            it('last only has data force parallel', function (done) {
                 var count = 0;
                 var createClient = function () {
                     return {
@@ -859,17 +859,23 @@ describe('MultipleRedis', function () {
                             assert.deepEqual(args, ['my key']);
                             assert.isFunction(callback);
 
-                            if (count === 2) {
-                                callback(null, 'my value');
-                            } else {
+                            switch (count) {
+                            case 1:
+                                setTimeout(callback, 30000);
+                                break;
+                            case 2:
                                 callback(null, null);
+                                break;
+                            default:
+                                callback(null, 'my value');
                             }
                         }
                     };
                 };
                 var client1 = createClient();
                 var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2], {
+                var client3 = createClient();
+                var client = MultipleRedis.createClient([client1, client2, client3], {
                     forceParallel: true
                 });
 
@@ -878,7 +884,47 @@ describe('MultipleRedis', function () {
                 client.get('my key', function (error, response) {
                     assert.isNull(error);
                     assert.equal(response, 'my value');
-                    assert.equal(count, 2);
+                    assert.equal(count, 3);
+
+                    done();
+                });
+            });
+
+            it('all no data force parallel', function (done) {
+                var count = 0;
+                var createClient = function () {
+                    return {
+                        on: noop,
+                        send_command: function (name, args, callback) {
+                            count++;
+
+                            assert.equal(name, 'get');
+                            assert.deepEqual(args, ['my key']);
+                            assert.isFunction(callback);
+
+                            switch (count) {
+                            case 1:
+                                setTimeout(callback, 0);
+                                break;
+                            default:
+                                callback(null, null);
+                            }
+                        }
+                    };
+                };
+                var client1 = createClient();
+                var client2 = createClient();
+                var client3 = createClient();
+                var client = MultipleRedis.createClient([client1, client2, client3], {
+                    forceParallel: true
+                });
+
+                assert.isTrue(client.forceParallel);
+
+                client.get('my key', function (error, response) {
+                    assert.isDefined(error);
+                    assert.isNull(response);
+                    assert.equal(count, 3);
 
                     done();
                 });
