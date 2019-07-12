@@ -1,7 +1,5 @@
 'use strict';
 
-/*global describe: false, it: false*/
-
 var chai = require('chai');
 var assert = chai.assert;
 var redis = require('redis');
@@ -885,6 +883,64 @@ describe('MultipleRedis', function () {
                     assert.isNull(error);
                     assert.equal(response, 'my value');
                     assert.equal(count, 3);
+
+                    done();
+                });
+            });
+
+            it('last has data force parallel, others timeout/error/null', function (done) {
+                this.timeout(100);
+
+                var count = 0;
+                var createClient = function () {
+                    return {
+                        on: noop,
+                        send_command: function (name, args, callback) {
+                            count++;
+
+                            assert.equal(name, 'get');
+                            assert.deepEqual(args, ['my key']);
+                            assert.isFunction(callback);
+
+                            var currentCount = count;
+
+                            setTimeout(function () {
+                                switch (currentCount) {
+                                case 1:
+                                    setTimeout(callback, 120000);
+                                    break;
+                                case 2:
+                                    callback(null, null);
+                                    break;
+                                case 3:
+                                    callback(new Error('test'));
+                                    break;
+                                case 4:
+                                    callback();
+                                    break;
+                                default:
+                                    callback(null, 'my value');
+                                }
+                            }, 1);
+                        }
+                    };
+                };
+                var client = MultipleRedis.createClient([
+                    createClient(),
+                    createClient(),
+                    createClient(),
+                    createClient(),
+                    createClient()
+                ], {
+                    forceParallel: true
+                });
+
+                assert.isTrue(client.forceParallel);
+
+                client.get('my key', function (error, response) {
+                    assert.isNull(error);
+                    assert.equal(response, 'my value');
+                    assert.equal(count, 5);
 
                     done();
                 });
