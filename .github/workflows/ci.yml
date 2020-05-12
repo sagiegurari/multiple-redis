@@ -18,15 +18,21 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Setup Redis
+    - name: Start Redis 1
       uses: shogo82148/actions-setup-redis@v1
       with:
         redis-version: '5.x'
-    - name: Startup Redis
-      run: |
-          chmod -R 777 ./test/helper/*.sh
-          ./test/helper/start_redis.sh 7777 /etc/redis/redis.conf
-          ./test/helper/start_redis.sh 7777 /etc/redis/redis.conf
+        redis-port: 6379
+    - name: Start Redis 2
+      uses: shogo82148/actions-setup-redis@v1
+      with:
+        redis-version: '5.x'
+        redis-port: 7777
+    - name: Start Redis 3
+      uses: shogo82148/actions-setup-redis@v1
+      with:
+        redis-version: '5.x'
+        redis-port: 7778
     - name: Install node.js
       uses: actions/setup-node@v1
       with:

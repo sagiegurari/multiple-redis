@@ -1,3 +1,3 @@
 #!/bin/bash
 
-redis-server $2 --port $1
+sudo redis-server $2 --port $1
