@@ -10,7 +10,7 @@ const redis = require('redis');
 const MultipleRedis = require('../../');
 
 describe('Integration Tests', function () {
-    const killRedisEnabled = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_KILL_ENABLED == 'true';
+    const killRedisEnabled = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_KILL_ENABLED === 'true';
 
     const redis1Host = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_HOST1;
     let redis1Port = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_PORT1;
