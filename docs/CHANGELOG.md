@@ -1,5 +1,6 @@
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
+| 2020-05-12  | v2.0.0  | Migrate to github actions and upgrade minimal node version |
 | 2020-02-10  | v1.3.0  | Upgrade to redis 3 |
 | 2019-06-24  | v1.2.1  | Added 'forceParallel' option to issue GET in parallel #5 |
 | 2017-07-26  | v1.0.61 | Added all-ready event and allConnected attribute |

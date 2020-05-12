@@ -1,40 +1,40 @@
 'use strict';
 
-var chai = require('chai');
-var assert = chai.assert;
-var path = require('path');
-var events = require('events');
-var EventEmitter = events.EventEmitter;
-var childProcess = require('child_process');
-var redis = require('redis');
-var MultipleRedis = require('../../');
+const chai = require('chai');
+const assert = chai.assert;
+const path = require('path');
+const events = require('events');
+const EventEmitter = events.EventEmitter;
+const childProcess = require('child_process');
+const redis = require('redis');
+const MultipleRedis = require('../../');
 
 describe('Integration Tests', function () {
-    var redis1Host = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_HOST1;
-    var redis1Port = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_PORT1;
+    const redis1Host = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_HOST1;
+    let redis1Port = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_PORT1;
     if (redis1Port) {
         redis1Port = parseInt(redis1Port, 10);
     } else {
         redis1Port = 6379;
     }
 
-    var redis2Host = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_HOST2;
-    var redis2Port = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_PORT2;
+    const redis2Host = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_HOST2;
+    let redis2Port = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_PORT2;
     if (redis2Port) {
         redis2Port = parseInt(redis2Port, 10);
     } else {
         redis2Port = 6379;
     }
 
-    var authPass = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_AUTH_PASS;
-    var options = {
+    const authPass = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_AUTH_PASS;
+    const options = {
         forceNoMock: true
     };
     if (authPass) {
         options.auth_pass = authPass;
     }
 
-    var redisPorts = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_PORTS;
+    let redisPorts = process.env.MULTIPLE_REDIS_TEST_INTEGRATION_PORTS;
     if (redisPorts) {
         redisPorts = redisPorts.split(',');
     }
@@ -43,7 +43,7 @@ describe('Integration Tests', function () {
         it('redis does not exist test', function (done) {
             this.timeout(5000);
 
-            var redisClient = MultipleRedis.createClient([
+            const redisClient = MultipleRedis.createClient([
                 {
                     host: redis1Host,
                     port: redis1Port
@@ -58,7 +58,7 @@ describe('Integration Tests', function () {
                 setTimeout(function () {
                     assert.isTrue(redisClient.connected);
 
-                    var key = 'TESTKEY:TEST1';
+                    const key = 'TESTKEY:TEST1';
                     redisClient.set(key, 'test value', function onWrite(writeError) {
                         assert.isNull(writeError);
 
@@ -84,13 +84,13 @@ describe('Integration Tests', function () {
         it('pub/sub - redis killed', function (done) {
             this.timeout(90000);
 
-            var publisher = redis.createClient(redisPorts[0], 'localhost', options);
+            const publisher = redis.createClient(redisPorts[0], 'localhost', options);
 
             publisher.on('error', function () {
                 return undefined;
             });
 
-            var connectionInfo = [];
+            const connectionInfo = [];
             redisPorts.forEach(function (redisPort) {
                 connectionInfo.push({
                     host: 'localhost',
@@ -98,7 +98,7 @@ describe('Integration Tests', function () {
                 });
             });
 
-            var redisClient = MultipleRedis.createClient(connectionInfo, options);
+            const redisClient = MultipleRedis.createClient(connectionInfo, options);
 
             redisClient.on('error', function () {
                 return undefined;
@@ -135,9 +135,9 @@ describe('Integration Tests', function () {
                                 ], function (killError) {
                                     assert.isNull(killError);
 
-                                    var emitter = new EventEmitter();
+                                    const emitter = new EventEmitter();
 
-                                    var readyCount = 0;
+                                    let readyCount = 0;
                                     emitter.on('ready', function () {
                                         readyCount++;
 

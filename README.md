@@ -1,7 +1,6 @@
 # multiple-redis
 
-[![NPM Version](http://img.shields.io/npm/v/multiple-redis.svg?style=flat)](https://www.npmjs.org/package/multiple-redis) [![Build Status](https://travis-ci.org/sagiegurari/multiple-redis.svg)](http://travis-ci.org/sagiegurari/multiple-redis) [![Coverage Status](https://coveralls.io/repos/sagiegurari/multiple-redis/badge.svg)](https://coveralls.io/r/sagiegurari/multiple-redis) [![Known Vulnerabilities](https://snyk.io/test/github/sagiegurari/multiple-redis/badge.svg)](https://snyk.io/test/github/sagiegurari/multiple-redis) [![Inline docs](http://inch-ci.org/github/sagiegurari/multiple-redis.svg?branch=master)](http://inch-ci.org/github/sagiegurari/multiple-redis)<br>
-[![License](https://img.shields.io/npm/l/multiple-redis.svg?style=flat)](https://github.com/sagiegurari/multiple-redis/blob/master/LICENSE) [![Total Downloads](https://img.shields.io/npm/dt/multiple-redis.svg?style=flat)](https://www.npmjs.org/package/multiple-redis) [![Dependency Status](https://david-dm.org/sagiegurari/multiple-redis.svg)](https://david-dm.org/sagiegurari/multiple-redis) [![devDependency Status](https://david-dm.org/sagiegurari/multiple-redis/dev-status.svg)](https://david-dm.org/sagiegurari/multiple-redis?type=dev)
+[![NPM Version](http://img.shields.io/npm/v/multiple-redis.svg?style=flat)](https://www.npmjs.org/package/multiple-redis) [![CI](https://github.com/sagiegurari/multiple-redis/workflows/CI/badge.svg?branch=master)](https://github.com/sagiegurari/multiple-redis/actions) [![Coverage Status](https://coveralls.io/repos/sagiegurari/multiple-redis/badge.svg)](https://coveralls.io/r/sagiegurari/multiple-redis) [![Known Vulnerabilities](https://snyk.io/test/github/sagiegurari/multiple-redis/badge.svg)](https://snyk.io/test/github/sagiegurari/multiple-redis) [![Inline docs](http://inch-ci.org/github/sagiegurari/multiple-redis.svg?branch=master)](http://inch-ci.org/github/sagiegurari/multiple-redis) [![License](https://img.shields.io/npm/l/multiple-redis.svg?style=flat)](https://github.com/sagiegurari/multiple-redis/blob/master/LICENSE) [![Total Downloads](https://img.shields.io/npm/dt/multiple-redis.svg?style=flat)](https://www.npmjs.org/package/multiple-redis)
 
 > Run redis commands against multiple redis instances.
 
@@ -137,6 +136,7 @@ See [contributing guide](.github/CONTRIBUTING.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
+| 2020-05-12  | v2.0.0  | Migrate to github actions and upgrade minimal node version |
 | 2020-02-10  | v1.3.0  | Upgrade to redis 3 |
 | 2019-06-24  | v1.2.1  | Added 'forceParallel' option to issue GET in parallel #5 |
 | 2017-07-26  | v1.0.61 | Added all-ready event and allConnected attribute |

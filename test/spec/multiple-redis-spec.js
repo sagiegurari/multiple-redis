@@ -1,22 +1,22 @@
 'use strict';
 
-var chai = require('chai');
-var assert = chai.assert;
-var redis = require('redis');
-var events = require('events');
-var EventEmitter = events.EventEmitter;
-var MultipleRedis = require('../../');
+const chai = require('chai');
+const assert = chai.assert;
+const redis = require('redis');
+const events = require('events');
+const EventEmitter = events.EventEmitter;
+const MultipleRedis = require('../../');
 
-var noop = function noop() {
+const noop = function noop() {
     return undefined;
 };
 
-var emitter = new EventEmitter();
-var baseCreate = redis.createClient;
-var mockRedis = (process.env.MULTIPLE_REDIS_TEST_USE_REDIS !== 'true');
+const emitter = new EventEmitter();
+const baseCreate = redis.createClient;
+const mockRedis = (process.env.MULTIPLE_REDIS_TEST_USE_REDIS !== 'true');
 
 redis.createClient = function (port, host, options) {
-    var redisClient;
+    let redisClient;
     if ((options && options.forceNoMock) || ((!mockRedis) && (host === 'localhost') && (port === 6379) && options && (!options.mock))) {
         redisClient = baseCreate.call(redis, port, host, options);
     } else {
@@ -33,7 +33,7 @@ redis.createClient = function (port, host, options) {
 describe('MultipleRedis', function () {
     describe('create', function () {
         it('no input', function () {
-            var errorFound = false;
+            let errorFound = false;
 
             try {
                 MultipleRedis.createClient();
@@ -46,7 +46,7 @@ describe('MultipleRedis', function () {
         });
 
         it('empty array', function () {
-            var errorFound = false;
+            let errorFound = false;
 
             try {
                 MultipleRedis.createClient([]);
@@ -59,7 +59,7 @@ describe('MultipleRedis', function () {
         });
 
         it('too many arguments', function () {
-            var errorFound = false;
+            let errorFound = false;
 
             try {
                 MultipleRedis.createClient([
@@ -77,7 +77,7 @@ describe('MultipleRedis', function () {
         });
 
         it('redis clients', function () {
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 {
                     on: noop
                 },
@@ -90,7 +90,7 @@ describe('MultipleRedis', function () {
         });
 
         it('redis client', function () {
-            var client = MultipleRedis.createClient({
+            const client = MultipleRedis.createClient({
                 on: noop
             });
 
@@ -98,7 +98,7 @@ describe('MultipleRedis', function () {
         });
 
         it('connection info array', function () {
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 {
                     host: 'localhost1',
                     port: 1234
@@ -113,7 +113,7 @@ describe('MultipleRedis', function () {
         });
 
         it('connection info array with duplicates', function () {
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 {
                     host: 'localhost1',
                     port: 1234
@@ -138,7 +138,7 @@ describe('MultipleRedis', function () {
         });
 
         it('connection info array with duplicates no merge', function () {
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 {
                     host: 'localhost1',
                     port: 1234
@@ -165,7 +165,7 @@ describe('MultipleRedis', function () {
         });
 
         it('single connection info', function () {
-            var client = MultipleRedis.createClient({
+            const client = MultipleRedis.createClient({
                 host: 'localhost',
                 port: 1234
             });
@@ -176,10 +176,10 @@ describe('MultipleRedis', function () {
         });
 
         it('connection info array with options', function (done) {
-            var count = 0;
-            var client;
+            let count = 0;
+            let client;
             /*jslint unparam: true*/
-            var validateCreate = function (redisClient, port, host, options) {
+            const validateCreate = function (redisClient, port, host, options) {
                 if ((port === 1234) && (host.indexOf('options') === 0)) {
                     assert.deepEqual(options, {
                         enable_offline_queue: false,
@@ -193,6 +193,7 @@ describe('MultipleRedis', function () {
 
                         setTimeout(function () {
                             client.quit();
+                            client = null;
                             done();
                         }, 0);
                     } else if (count > 2) {
@@ -219,10 +220,10 @@ describe('MultipleRedis', function () {
         });
 
         it('empty options', function (done) {
-            var client;
+            let client;
 
             /*jslint unparam: true*/
-            var validateCreate = function (redisClient, port, host, options) {
+            const validateCreate = function (redisClient, port, host, options) {
                 /*jshint camelcase: false*/
                 //jscs:disable requireCamelCaseOrUpperCaseIdentifiers
                 /*eslint-disable camelcase*/
@@ -235,6 +236,7 @@ describe('MultipleRedis', function () {
 
                 setTimeout(function () {
                     client.quit();
+                    client = null;
                     done();
                 }, 0);
             };
@@ -249,10 +251,10 @@ describe('MultipleRedis', function () {
         });
 
         it('enable_offline_queue option forced as true', function (done) {
-            var client;
+            let client;
 
             /*jslint unparam: true*/
-            var validateCreate = function (redisClient, port, host, options) {
+            const validateCreate = function (redisClient, port, host, options) {
                 /*jshint camelcase: false*/
                 //jscs:disable requireCamelCaseOrUpperCaseIdentifiers
                 /*eslint-disable camelcase*/
@@ -265,6 +267,7 @@ describe('MultipleRedis', function () {
 
                 setTimeout(function () {
                     client.quit();
+                    client = null;
                     done();
                 }, 0);
             };
@@ -281,7 +284,7 @@ describe('MultipleRedis', function () {
         });
 
         it('client timeout option negative value', function () {
-            var client = MultipleRedis.createClient({
+            const client = MultipleRedis.createClient({
                 host: 'options1',
                 port: 1234
             }, {
@@ -294,7 +297,7 @@ describe('MultipleRedis', function () {
         });
 
         it('client timeout option samller than 10 seconds', function () {
-            var client = MultipleRedis.createClient({
+            const client = MultipleRedis.createClient({
                 host: 'options1',
                 port: 1234
             }, {
@@ -307,7 +310,7 @@ describe('MultipleRedis', function () {
         });
 
         it('client timeout option bigger than 10 seconds', function () {
-            var client = MultipleRedis.createClient({
+            const client = MultipleRedis.createClient({
                 host: 'options1',
                 port: 1234
             }, {
@@ -320,11 +323,11 @@ describe('MultipleRedis', function () {
         });
 
         it('single connection info', function (done) {
-            var count = 0;
-            var client;
+            let count = 0;
+            let client;
 
             /*jslint unparam: true*/
-            var validateCreate = function (redisClient, port, host, options) {
+            const validateCreate = function (redisClient, port, host, options) {
                 if ((port === 1234) && (host === 'singleOption')) {
                     assert.deepEqual(options, {
                         enable_offline_queue: false,
@@ -338,6 +341,7 @@ describe('MultipleRedis', function () {
 
                         setTimeout(function () {
                             client.quit();
+                            client = null;
                             done();
                         }, 0);
                     } else if (count > 1) {
@@ -360,9 +364,9 @@ describe('MultipleRedis', function () {
 
     describe('proxy events', function () {
         it('proxy multiple events', function (done) {
-            var client1 = new EventEmitter();
-            var client2 = new EventEmitter();
-            var client = MultipleRedis.createClient([client1, client2]);
+            const client1 = new EventEmitter();
+            const client2 = new EventEmitter();
+            const client = MultipleRedis.createClient([client1, client2]);
 
             client.on('connect', function (e1Arg1, e1Arg2, e1Arg3) {
                 assert.equal(e1Arg1, 1);
@@ -390,44 +394,44 @@ describe('MultipleRedis', function () {
 
     describe('connect', function () {
         it('connect existing clients', function () {
-            var client1 = new EventEmitter();
+            const client1 = new EventEmitter();
             client1.connected = false;
             client1.server_info = 'server1';
-            var client2 = new EventEmitter();
+            const client2 = new EventEmitter();
             client2.connected = true;
             client2.server_info = 'server2';
-            var client = MultipleRedis.createClient([client1, client2]);
+            const client = MultipleRedis.createClient([client1, client2]);
 
             assert.isTrue(client.connected);
             assert.equal(client.server_info, 'server2');
         });
 
         it('connect existing not connected clients', function () {
-            var client1 = new EventEmitter();
+            const client1 = new EventEmitter();
             client1.connected = false;
             client1.server_info = 'server1';
-            var client2 = new EventEmitter();
+            const client2 = new EventEmitter();
             client2.connected = false;
             client2.server_info = 'server2';
-            var client = MultipleRedis.createClient([client1, client2]);
+            const client = MultipleRedis.createClient([client1, client2]);
 
             assert.isFalse(client.connected);
             assert.isNull(client.server_info);
         });
 
         it('connect via event', function (done) {
-            var client1 = new EventEmitter();
+            const client1 = new EventEmitter();
             client1.connected = false;
             client1.server_info = 'server1';
-            var client2 = new EventEmitter();
+            const client2 = new EventEmitter();
             client2.connected = false;
             client2.server_info = 'server2';
-            var client = MultipleRedis.createClient([client1, client2]);
+            const client = MultipleRedis.createClient([client1, client2]);
 
             assert.isFalse(client.connected);
             assert.isNull(client.server_info);
 
-            var unbind = client.onAsync('connect', function () {
+            const unbind = client.onAsync('connect', function () {
                 assert.isTrue(client.connected);
                 assert.equal(client.server_info, 'server1');
 
@@ -457,20 +461,20 @@ describe('MultipleRedis', function () {
         });
 
         it('connect for multiple proxy clients', function () {
-            var client1 = new EventEmitter();
+            const client1 = new EventEmitter();
             client1.connected = false;
             client1.server_info = 'server1';
-            var multipleClient1 = MultipleRedis.createClient(client1);
+            const multipleClient1 = MultipleRedis.createClient(client1);
 
-            var client2 = new EventEmitter();
+            const client2 = new EventEmitter();
             client2.connected = true;
             client2.server_info = 'server2';
-            var multipleClient2 = MultipleRedis.createClient(client2);
+            const multipleClient2 = MultipleRedis.createClient(client2);
 
-            var client3 = new EventEmitter();
+            const client3 = new EventEmitter();
             client3.connected = true;
             client3.server_info = 'server3';
-            var multipleClient3 = MultipleRedis.createClient(client3);
+            const multipleClient3 = MultipleRedis.createClient(client3);
 
             assert.isFalse(multipleClient1.connected);
             assert.isNull(multipleClient1.server_info);
@@ -486,11 +490,11 @@ describe('MultipleRedis', function () {
     describe('command', function () {
         describe('args', function () {
             it('more than 2 args with array', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'set');
@@ -501,9 +505,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.set(['my key'], 'my value', function (error, response) {
                     assert.isNull(error);
@@ -515,11 +519,11 @@ describe('MultipleRedis', function () {
             });
 
             it('args as array', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'set');
@@ -530,9 +534,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.set(['my key', 'my value'], function (error, response) {
                     assert.isNull(error);
@@ -546,11 +550,11 @@ describe('MultipleRedis', function () {
 
         describe('set', function () {
             it('valid', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'set');
@@ -561,9 +565,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.set('my key', 'my value', function (error, response) {
                     assert.isNull(error);
@@ -575,11 +579,11 @@ describe('MultipleRedis', function () {
             });
 
             it('valid no callback', function () {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'set');
@@ -590,9 +594,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.set('my key', 'my value');
 
@@ -600,11 +604,11 @@ describe('MultipleRedis', function () {
             });
 
             it('error', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'set');
@@ -615,9 +619,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.set('my key', 'my value', function (error, response) {
                     assert.isDefined(error);
@@ -629,11 +633,11 @@ describe('MultipleRedis', function () {
             });
 
             it('partial error', function (done) {
-                var count = 0;
-                var createClient = function (valid) {
+                let count = 0;
+                const createClient = function (valid) {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'set');
@@ -648,9 +652,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient(true);
-                var client2 = createClient(false);
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient(true);
+                const client2 = createClient(false);
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.set('my key', 'my value', function (error, response) {
                     assert.isNull(error);
@@ -662,18 +666,18 @@ describe('MultipleRedis', function () {
             });
 
             it('set throw error', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function () {
+                        send_command() {
                             count++;
                             throw new Error();
                         }
                     };
                 };
-                var client1 = createClient();
-                var client = MultipleRedis.createClient(client1);
+                const client1 = createClient();
+                const client = MultipleRedis.createClient(client1);
 
                 client.set('my key', 'my value', function (error, response) {
                     assert.isDefined(error);
@@ -685,11 +689,11 @@ describe('MultipleRedis', function () {
             });
 
             it('partial timeout', function (done) {
-                var count = 0;
-                var createClient = function (valid) {
+                let count = 0;
+                const createClient = function (valid) {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'set');
@@ -702,9 +706,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient(true);
-                var client2 = createClient(false);
-                var client = MultipleRedis.createClient([client1, client2], {
+                const client1 = createClient(true);
+                const client2 = createClient(false);
+                const client = MultipleRedis.createClient([client1, client2], {
                     childCommandTimeout: 10
                 });
 
@@ -718,11 +722,11 @@ describe('MultipleRedis', function () {
             });
 
             it('full timeout', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'set');
@@ -731,9 +735,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2], {
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2], {
                     childCommandTimeout: 10
                 });
 
@@ -749,11 +753,11 @@ describe('MultipleRedis', function () {
 
         describe('get', function () {
             it('valid', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'get');
@@ -764,9 +768,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.get('my key', function (error, response) {
                     assert.isNull(error);
@@ -778,11 +782,11 @@ describe('MultipleRedis', function () {
             });
 
             it('first only has data', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'get');
@@ -797,9 +801,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.get('my key', function (error, response) {
                     assert.isNull(error);
@@ -811,11 +815,11 @@ describe('MultipleRedis', function () {
             });
 
             it('second only has data', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'get');
@@ -830,9 +834,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 assert.isFalse(client.forceParallel);
 
@@ -846,11 +850,11 @@ describe('MultipleRedis', function () {
             });
 
             it('last only has data force parallel', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'get');
@@ -870,10 +874,10 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client3 = createClient();
-                var client = MultipleRedis.createClient([client1, client2, client3], {
+                const client1 = createClient();
+                const client2 = createClient();
+                const client3 = createClient();
+                const client = MultipleRedis.createClient([client1, client2, client3], {
                     forceParallel: true
                 });
 
@@ -891,18 +895,18 @@ describe('MultipleRedis', function () {
             it('last has data force parallel, others timeout/error/null', function (done) {
                 this.timeout(100);
 
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'get');
                             assert.deepEqual(args, ['my key']);
                             assert.isFunction(callback);
 
-                            var currentCount = count;
+                            const currentCount = count;
 
                             setTimeout(function () {
                                 switch (currentCount) {
@@ -925,7 +929,7 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client = MultipleRedis.createClient([
+                const client = MultipleRedis.createClient([
                     createClient(),
                     createClient(),
                     createClient(),
@@ -947,11 +951,11 @@ describe('MultipleRedis', function () {
             });
 
             it('all no data force parallel', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'get');
@@ -968,10 +972,10 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client3 = createClient();
-                var client = MultipleRedis.createClient([client1, client2, client3], {
+                const client1 = createClient();
+                const client2 = createClient();
+                const client3 = createClient();
+                const client = MultipleRedis.createClient([client1, client2, client3], {
                     forceParallel: true
                 });
 
@@ -987,11 +991,11 @@ describe('MultipleRedis', function () {
             });
 
             it('valid no callback', function () {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'get');
@@ -1002,9 +1006,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.get('my key');
 
@@ -1012,11 +1016,11 @@ describe('MultipleRedis', function () {
             });
 
             it('partial timeout', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'get');
@@ -1029,9 +1033,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2], {
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2], {
                     childCommandTimeout: 10
                 });
 
@@ -1045,11 +1049,11 @@ describe('MultipleRedis', function () {
             });
 
             it('full timeout', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'get');
@@ -1058,9 +1062,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2], {
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2], {
                     childCommandTimeout: 10
                 });
 
@@ -1073,11 +1077,11 @@ describe('MultipleRedis', function () {
             });
 
             it('error', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'get');
@@ -1088,9 +1092,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.get('my key', function (error, response) {
                     assert.isDefined(error);
@@ -1102,11 +1106,11 @@ describe('MultipleRedis', function () {
             });
 
             it('partial error', function (done) {
-                var count = 0;
-                var createClient = function (valid) {
+                let count = 0;
+                const createClient = function (valid) {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'get');
@@ -1121,10 +1125,10 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient(false);
-                var client2 = createClient(true);
-                var client3 = createClient(true);
-                var client = MultipleRedis.createClient([client1, client2, client3]);
+                const client1 = createClient(false);
+                const client2 = createClient(true);
+                const client3 = createClient(true);
+                const client = MultipleRedis.createClient([client1, client2, client3]);
 
                 client.get('my key', function (error, response) {
                     assert.isNull(error);
@@ -1136,10 +1140,10 @@ describe('MultipleRedis', function () {
             });
 
             it('partial error and no output', function (done) {
-                var createClient = function (valid) {
+                const createClient = function (valid) {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             assert.equal(name, 'get');
                             assert.deepEqual(args, ['my key']);
                             assert.isFunction(callback);
@@ -1152,9 +1156,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient(false);
-                var client2 = createClient(true);
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient(false);
+                const client2 = createClient(true);
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.get('my key', function (error, response) {
                     assert.isNull(error);
@@ -1171,7 +1175,7 @@ describe('MultipleRedis', function () {
 
                 if (mockRedis) {
                     /*jslint unparam: true*/
-                    var modifyClient = function (redisClient, port, host, options) {
+                    const modifyClient = function (redisClient, port, host, options) {
                         if ((host === 'localhost') && (port === 6379) && options && (!options.mock)) {
                             redisClient.send_command = function (name, args, callback) {
                                 if (name === 'set') {
@@ -1194,14 +1198,14 @@ describe('MultipleRedis', function () {
 
                     emitter.on('create', modifyClient);
 
-                    var orgDone = done;
+                    const orgDone = done;
                     done = function () {
                         emitter.removeListener('create', modifyClient);
                         orgDone();
                     };
                 }
 
-                var client = MultipleRedis.createClient([
+                const client = MultipleRedis.createClient([
                     {
                         host: 'localhost',
                         port: 6379
@@ -1239,11 +1243,11 @@ describe('MultipleRedis', function () {
 
         describe('setnx', function () {
             it('valid', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'setnx');
@@ -1254,9 +1258,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.setnx('my key', 'my value', function (error, response) {
                     assert.isNull(error);
@@ -1268,11 +1272,11 @@ describe('MultipleRedis', function () {
             });
 
             it('first is already set', function (done) {
-                var count = 0;
-                var createClient = function (response) {
+                let count = 0;
+                const createClient = function (response) {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'setnx');
@@ -1283,9 +1287,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient(0);
-                var client2 = createClient(1);
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient(0);
+                const client2 = createClient(1);
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.setnx('my key', 'my value', function (error, response) {
                     assert.isNull(error);
@@ -1297,11 +1301,11 @@ describe('MultipleRedis', function () {
             });
 
             it('second is already set', function (done) {
-                var count = 0;
-                var createClient = function (response) {
+                let count = 0;
+                const createClient = function (response) {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'setnx');
@@ -1312,9 +1316,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient(1);
-                var client2 = createClient(0);
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient(1);
+                const client2 = createClient(0);
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.setnx('my key', 'my value', function (error, response) {
                     assert.isNull(error);
@@ -1326,11 +1330,11 @@ describe('MultipleRedis', function () {
             });
 
             it('valid no callback', function () {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'setnx');
@@ -1341,9 +1345,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.setnx('my key', 'my value');
 
@@ -1351,11 +1355,11 @@ describe('MultipleRedis', function () {
             });
 
             it('error', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'setnx');
@@ -1366,9 +1370,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.setnx('my key', 'my value', function (error, response) {
                     assert.isDefined(error);
@@ -1380,11 +1384,11 @@ describe('MultipleRedis', function () {
             });
 
             it('partial error', function (done) {
-                var count = 0;
-                var createClient = function (valid) {
+                let count = 0;
+                const createClient = function (valid) {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'setnx');
@@ -1399,9 +1403,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient(true);
-                var client2 = createClient(false);
-                var client = MultipleRedis.createClient([client1, client2]);
+                const client1 = createClient(true);
+                const client2 = createClient(false);
+                const client = MultipleRedis.createClient([client1, client2]);
 
                 client.setnx('my key', 'my value', function (error, response) {
                     assert.isNull(error);
@@ -1413,18 +1417,18 @@ describe('MultipleRedis', function () {
             });
 
             it('set throw error', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function () {
+                        send_command() {
                             count++;
                             throw new Error();
                         }
                     };
                 };
-                var client1 = createClient();
-                var client = MultipleRedis.createClient(client1);
+                const client1 = createClient();
+                const client = MultipleRedis.createClient(client1);
 
                 client.set('my key', 'my value', function (error, response) {
                     assert.isDefined(error);
@@ -1436,11 +1440,11 @@ describe('MultipleRedis', function () {
             });
 
             it('partial timeout', function (done) {
-                var count = 0;
-                var createClient = function (valid) {
+                let count = 0;
+                const createClient = function (valid) {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'setnx');
@@ -1453,9 +1457,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient(true);
-                var client2 = createClient(false);
-                var client = MultipleRedis.createClient([client1, client2], {
+                const client1 = createClient(true);
+                const client2 = createClient(false);
+                const client = MultipleRedis.createClient([client1, client2], {
                     childCommandTimeout: 10
                 });
 
@@ -1469,11 +1473,11 @@ describe('MultipleRedis', function () {
             });
 
             it('full timeout', function (done) {
-                var count = 0;
-                var createClient = function () {
+                let count = 0;
+                const createClient = function () {
                     return {
                         on: noop,
-                        send_command: function (name, args, callback) {
+                        send_command(name, args, callback) {
                             count++;
 
                             assert.equal(name, 'setnx');
@@ -1482,9 +1486,9 @@ describe('MultipleRedis', function () {
                         }
                     };
                 };
-                var client1 = createClient();
-                var client2 = createClient();
-                var client = MultipleRedis.createClient([client1, client2], {
+                const client1 = createClient();
+                const client2 = createClient();
+                const client = MultipleRedis.createClient([client1, client2], {
                     childCommandTimeout: 10
                 });
 
@@ -1501,7 +1505,7 @@ describe('MultipleRedis', function () {
 
     describe('createCommandCallback', function () {
         it('timeout', function (done) {
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 {
                     on: noop
                 }
@@ -1509,10 +1513,10 @@ describe('MultipleRedis', function () {
                 childCommandTimeout: 10
             });
 
-            var globalState = {};
-            var clientState = {};
+            const globalState = {};
+            const clientState = {};
 
-            var callback = client.createCommandCallback(function () {
+            const callback = client.createCommandCallback(function () {
                 assert.isDefined(globalState.redisError);
 
                 done();
@@ -1522,7 +1526,7 @@ describe('MultipleRedis', function () {
         });
 
         it('ignore timeout', function (done) {
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 {
                     on: noop
                 }
@@ -1530,12 +1534,12 @@ describe('MultipleRedis', function () {
                 childCommandTimeout: 10
             });
 
-            var globalState = {};
-            var clientState = {
+            const globalState = {};
+            const clientState = {
                 ignore: true
             };
 
-            var callback = client.createCommandCallback(function () {
+            const callback = client.createCommandCallback(function () {
                 assert.fail();
             }, globalState, clientState);
 
@@ -1549,7 +1553,7 @@ describe('MultipleRedis', function () {
         });
 
         it('wrapper called twice', function () {
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 {
                     on: noop
                 }
@@ -1557,11 +1561,11 @@ describe('MultipleRedis', function () {
                 childCommandTimeout: 10
             });
 
-            var globalState = {};
-            var clientState = {};
+            const globalState = {};
+            const clientState = {};
 
-            var called = false;
-            var callback = client.createCommandCallback(function () {
+            const called = false;
+            const callback = client.createCommandCallback(function () {
                 if (called) {
                     assert.fail();
                 }
@@ -1577,23 +1581,23 @@ describe('MultipleRedis', function () {
 
     describe('invokeCommandOnClient', function () {
         it('exception thrown', function (done) {
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 {
                     on: noop,
-                    send_command: function () {
+                    send_command() {
                         throw new Error('test');
                     }
                 }
             ]);
 
-            var globalState = {};
+            const globalState = {};
 
             client.invokeCommandOnClient({
                 client: client.clients[0],
                 getCommand: true,
                 clientState: {},
-                globalState: globalState,
-                callback: function () {
+                globalState,
+                callback() {
                     assert.isDefined(globalState.redisError);
                     assert.strictEqual(globalState.redisError.message, 'test');
 
@@ -1603,10 +1607,10 @@ describe('MultipleRedis', function () {
         });
 
         it('ignore exception thrown', function (done) {
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 {
                     on: noop,
-                    send_command: function () {
+                    send_command() {
                         throw new Error('test');
                     }
                 }
@@ -1614,16 +1618,16 @@ describe('MultipleRedis', function () {
                 childCommandTimeout: 10
             });
 
-            var clientState = {
+            const clientState = {
                 ignore: true
             };
 
             client.invokeCommandOnClient({
                 client: client.clients[0],
                 getCommand: true,
-                clientState: clientState,
+                clientState,
                 globalState: {},
-                callback: function () {
+                callback() {
                     assert.fail();
                 }
             });
@@ -1632,10 +1636,10 @@ describe('MultipleRedis', function () {
         });
 
         it('ignore output', function (done) {
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 {
                     on: noop,
-                    send_command: function (name, args, callback) {
+                    send_command(name, args, callback) {
                         callback(null, 1);
                     }
                 }
@@ -1643,16 +1647,16 @@ describe('MultipleRedis', function () {
                 childCommandTimeout: 10
             });
 
-            var clientState = {
+            const clientState = {
                 ignore: true
             };
 
             client.invokeCommandOnClient({
                 client: client.clients[0],
                 getCommand: true,
-                clientState: clientState,
+                clientState,
                 globalState: {},
-                callback: function () {
+                callback() {
                     assert.fail();
                 }
             });
@@ -1661,10 +1665,10 @@ describe('MultipleRedis', function () {
         });
 
         it('empty output', function (done) {
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 {
                     on: noop,
-                    send_command: function (name, args, callback) {
+                    send_command(name, args, callback) {
                         callback();
                     }
                 }
@@ -1677,7 +1681,7 @@ describe('MultipleRedis', function () {
                 getCommand: true,
                 clientState: {},
                 globalState: {},
-                callback: function (error) {
+                callback(error) {
                     assert.isDefined(error);
 
                     done();
@@ -1688,10 +1692,10 @@ describe('MultipleRedis', function () {
 
     describe('resetState', function () {
         it('all connected, ready event', function (done) {
-            var client1 = new EventEmitter();
-            var client2 = new EventEmitter();
+            const client1 = new EventEmitter();
+            const client2 = new EventEmitter();
 
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 client1,
                 client2
             ]);
@@ -1713,10 +1717,10 @@ describe('MultipleRedis', function () {
         });
 
         it('all connected but not ready, ready event', function (done) {
-            var client1 = new EventEmitter();
-            var client2 = new EventEmitter();
+            const client1 = new EventEmitter();
+            const client2 = new EventEmitter();
 
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 client1,
                 client2
             ]);
@@ -1742,10 +1746,10 @@ describe('MultipleRedis', function () {
         });
 
         it('all connected, not a ready event', function (done) {
-            var client1 = new EventEmitter();
-            var client2 = new EventEmitter();
+            const client1 = new EventEmitter();
+            const client2 = new EventEmitter();
 
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 client1,
                 client2
             ]);
@@ -1771,10 +1775,10 @@ describe('MultipleRedis', function () {
         });
 
         it('not all connected, ready event', function (done) {
-            var client1 = new EventEmitter();
-            var client2 = new EventEmitter();
+            const client1 = new EventEmitter();
+            const client2 = new EventEmitter();
 
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 client1,
                 client2
             ]);
@@ -1800,10 +1804,10 @@ describe('MultipleRedis', function () {
         });
 
         it('not all connected, not a ready event', function (done) {
-            var client1 = new EventEmitter();
-            var client2 = new EventEmitter();
+            const client1 = new EventEmitter();
+            const client2 = new EventEmitter();
 
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 client1,
                 client2
             ]);
@@ -1831,10 +1835,10 @@ describe('MultipleRedis', function () {
 
     describe('onready', function () {
         it('all connected, ready event', function (done) {
-            var client1 = new EventEmitter();
-            var client2 = new EventEmitter();
+            const client1 = new EventEmitter();
+            const client2 = new EventEmitter();
 
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 client1,
                 client2
             ]);
@@ -1856,10 +1860,10 @@ describe('MultipleRedis', function () {
         });
 
         it('all connected but not ready, ready event', function (done) {
-            var client1 = new EventEmitter();
-            var client2 = new EventEmitter();
+            const client1 = new EventEmitter();
+            const client2 = new EventEmitter();
 
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 client1,
                 client2
             ]);
@@ -1885,10 +1889,10 @@ describe('MultipleRedis', function () {
         });
 
         it('not all connected, ready event', function (done) {
-            var client1 = new EventEmitter();
-            var client2 = new EventEmitter();
+            const client1 = new EventEmitter();
+            const client2 = new EventEmitter();
 
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 client1,
                 client2
             ]);
@@ -1916,10 +1920,10 @@ describe('MultipleRedis', function () {
 
     describe('onconnect', function () {
         it('all connected, not a ready event', function (done) {
-            var client1 = new EventEmitter();
-            var client2 = new EventEmitter();
+            const client1 = new EventEmitter();
+            const client2 = new EventEmitter();
 
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 client1,
                 client2
             ]);
@@ -1945,10 +1949,10 @@ describe('MultipleRedis', function () {
         });
 
         it('not all connected, not a ready event', function (done) {
-            var client1 = new EventEmitter();
-            var client2 = new EventEmitter();
+            const client1 = new EventEmitter();
+            const client2 = new EventEmitter();
 
-            var client = MultipleRedis.createClient([
+            const client = MultipleRedis.createClient([
                 client1,
                 client2
             ]);

@@ -5,12 +5,13 @@
 /*eslint-disable no-underscore-dangle*/
 
 module.exports = function (grunt) {
-    var commons = require('js-project-commons');
+    const commons = require('js-project-commons');
 
     commons.grunt.config.initConfig(grunt, {
         buildConfig: {
             projectRoot: __dirname,
-            nodeProject: true
+            nodeProject: true,
+            skipSecurityCheck: true
         }
     });
 };

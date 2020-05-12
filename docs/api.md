@@ -85,20 +85,20 @@ Creates and returns a new MultiRedisClient instance.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | clients | <code>Array.&lt;redis&gt;</code> \| <code>redis</code> |  | The redis client/s |
-| [options] | <code>Object</code> |  | Various options |
+| [options] | <code>Object</code> |  | constious options |
 | [options.childCommandTimeout] | <code>Number</code> | <code>10000</code> | The per client command timeout |
 | [options.forceParallel] | <code>Boolean</code> | <code>false</code> | Force parallel, even for get commands |
 
 **Example**  
 ```js
 //create multiple redis clients
-var redis = require('redis');
-var client1 = redis.createClient(...);
-var client2 = redis.createClient(...);
+const redis = require('redis');
+const client1 = redis.createClient(...);
+const client2 = redis.createClient(...);
 
 //create the wrapper client
-var MultipleRedis = require('multiple-redis');
-var multiClient = MultipleRedis.createClient([client1, client2]);
+const MultipleRedis = require('multiple-redis');
+const multiClient = MultipleRedis.createClient([client1, client2]);
 
 multiClient.once('all-ready', function onReady() {
   //run any command on the multi client instead of the original clients
@@ -123,8 +123,8 @@ multiClient.once('all-ready', function onReady() {
 **Example**  
 ```js
 //create the wrapper client with connection info
-var MultipleRedis = require('multiple-redis');
-var multiClient = MultipleRedis.createClient([{
+const MultipleRedis = require('multiple-redis');
+const multiClient = MultipleRedis.createClient([{
   host: 'host1',
   port: 6379
 }, {
