@@ -41,7 +41,7 @@
     "async": "^3",
     "debuglog": "^1",
     "event-emitter-enhancer": "latest",
-    "redis": "^3",
+    "redis": "^4",
     "redis-commands": "^1"
   },
   "devDependencies": {
